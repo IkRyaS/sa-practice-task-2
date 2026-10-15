@@ -1,0 +1,138 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1300" height="720" viewBox="0 -60 1300 720" font-family="DejaVu Sans" font-size="11">
+<rect x="0" y="-60" width="1300" height="720" fill="#fff"/>
+<defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#222"/></marker><marker id="am" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10" fill="none" stroke="#222" stroke-width="1.3"/></marker><marker id="co" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="8" markerHeight="8"><circle cx="5" cy="5" r="3.5" fill="#fff" stroke="#222" stroke-width="1.2"/></marker></defs>
+<text x="20" y="-34" font-size="18" font-weight="bold" fill="#1f2d4a">Схема 5. Проверка допуска объекта к продажам (шаг 2, BR-01, EXC-3, EXC-5)</text>
+<rect x="20" y="20" width="1260" height="44" fill="#f4f4f4" stroke="#222" stroke-width="1.5"/>
+<text x="650.0" y="46.0" text-anchor="middle" font-weight="bold" font-size="13">Единый реестр КСР (ФСА)</text>
+<rect x="20" y="90" width="1260" height="550" fill="#fff" stroke="#222" stroke-width="1.5"/>
+<line x1="50" y1="90" x2="50" y2="640" stroke="#222" stroke-width="1.5"/>
+<text transform="translate(35,365) rotate(-90)" text-anchor="middle" dominant-baseline="middle" font-size="12" font-weight="bold">Платформа туроператора</text>
+<path d="M183,230 L239,230" fill="none" stroke="#222" stroke-width="1.4" marker-end="url(#ar)"/>
+<path d="M351,230 L402,230" fill="none" stroke="#222" stroke-width="1.4" marker-end="url(#ar)"/>
+<path d="M425,207 L425,158" fill="none" stroke="#222" stroke-width="1.4" marker-end="url(#ar)"/>
+<path d="M448,230 L499,230" fill="none" stroke="#222" stroke-width="1.4" marker-end="url(#ar)"/>
+<path d="M611,230 L667,230" fill="none" stroke="#222" stroke-width="1.4" marker-end="url(#ar)"/>
+<path d="M703,230 L792,230" fill="none" stroke="#222" stroke-width="1.4" marker-end="url(#ar)"/>
+<path d="M838,230 L927,230" fill="none" stroke="#222" stroke-width="1.4" marker-end="url(#ar)"/>
+<path d="M815,207 L815,158" fill="none" stroke="#222" stroke-width="1.4" marker-end="url(#ar)"/>
+<path d="M555,287 L555,370 L629,370" fill="none" stroke="#222" stroke-width="1.4" marker-end="url(#ar)"/>
+<path d="M741,370 L792,370" fill="none" stroke="#222" stroke-width="1.4" marker-end="url(#ar)"/>
+<path d="M838,370 L922,370" fill="none" stroke="#222" stroke-width="1.4" marker-end="url(#ar)"/>
+<path d="M968,370 L1057,370" fill="none" stroke="#222" stroke-width="1.4" marker-end="url(#ar)"/>
+<path d="M945,393 L945,418" fill="none" stroke="#222" stroke-width="1.4" marker-end="url(#ar)"/>
+<path d="M815,393 L815,457" fill="none" stroke="#222" stroke-width="1.4" marker-end="url(#ar)"/>
+<path d="M838,480 L855,480 L855,530 L899,530" fill="none" stroke="#222" stroke-width="1.4" marker-end="url(#ar)"/>
+<path d="M1011,530 L1077,530" fill="none" stroke="#222" stroke-width="1.4" marker-end="url(#ar)"/>
+<path d="M815,503 L815,557" fill="none" stroke="#222" stroke-width="1.4" marker-end="url(#ar)"/>
+<path d="M555,191 L555,64" fill="none" stroke="#222" stroke-width="1.2" stroke-dasharray="6,4" marker-start="url(#co)" marker-end="url(#am)"/>
+<path d="M685,64 L685,212" fill="none" stroke="#222" stroke-width="1.2" stroke-dasharray="6,4" marker-start="url(#co)" marker-end="url(#am)"/>
+<circle cx="165" cy="230" r="18.0" fill="#fff" stroke="#222" stroke-width="1.5"/>
+<text x="165" y="262" text-anchor="middle" font-size="11">Нужно проверить</text>
+<text x="165" y="276" text-anchor="middle" font-size="11">допуск объекта</text>
+<rect x="239.0" y="191.0" width="112" height="78" rx="9" fill="#fff" stroke="#222" stroke-width="1.5"/>
+<text x="295" y="229" text-anchor="middle" font-size="11">Проверить</text>
+<text x="295" y="242" text-anchor="middle" font-size="11">статус договора</text>
+<text x="295" y="255" text-anchor="middle" font-size="11">с отелем</text>
+<rect x="246.0" y="198.0" width="14" height="11" fill="#fff" stroke="#222"/><path d="M246.0,201.5 h14 M246.0,205.0 h14 M251.0,201.5 v7.5" stroke="#222" fill="none"/>
+<polygon points="425,207.0 448.0,230 425,253.0 402.0,230" fill="#fff" stroke="#222" stroke-width="1.5"/>
+<path d="M417,222 L433,238 M433,222 L417,238" stroke="#222" stroke-width="3"/>
+<text x="425" y="267" text-anchor="middle" font-size="11">Договор</text>
+<text x="425" y="281" text-anchor="middle" font-size="11">действует?</text>
+<circle cx="425" cy="140" r="18.0" fill="#fff" stroke="#222" stroke-width="4"/>
+<text x="513.289" y="137" text-anchor="middle" font-size="11">Допуска нет: договор</text>
+<text x="513.289" y="151" text-anchor="middle" font-size="11">не действует</text>
+<rect x="499.0" y="191.0" width="112" height="78" rx="9" fill="#fff" stroke="#222" stroke-width="1.5"/>
+<text x="555" y="222.5" text-anchor="middle" font-size="11">Запросить</text>
+<text x="555" y="235.5" text-anchor="middle" font-size="11">статус записи</text>
+<text x="555" y="248.5" text-anchor="middle" font-size="11">объекта в</text>
+<text x="555" y="261.5" text-anchor="middle" font-size="11">реестре КСР</text>
+<rect x="506.0" y="199.0" width="14" height="10" fill="#222" stroke="#222"/><path d="M506.0,199.0 L513.0,205.0 L520.0,199.0" fill="none" stroke="#fff"/>
+<circle cx="555" cy="269" r="18.0" fill="#fff" stroke="#222" stroke-width="1.5"/><circle cx="555" cy="269" r="14.0" fill="none" stroke="#222" stroke-width="1.5"/>
+<path d="M548,276 L552,261 L557,270 L562,261 L559,277 L554,268 Z" fill="#fff" stroke="#222"/>
+<text x="464.203" y="303" text-anchor="middle" font-size="11">Реестр</text>
+<text x="464.203" y="317" text-anchor="middle" font-size="11">недоступен</text>
+<text x="464.203" y="331" text-anchor="middle" font-size="11">(EXC-5)</text>
+<circle cx="685" cy="230" r="18.0" fill="#fff" stroke="#222" stroke-width="1.5"/><circle cx="685" cy="230" r="14.0" fill="none" stroke="#222" stroke-width="1.5"/>
+<rect x="678" y="225" width="14" height="10" fill="#fff" stroke="#222"/><path d="M678,225 L685,231 L692,225" fill="none" stroke="#222"/>
+<text x="685" y="262" text-anchor="middle" font-size="11">Статус записи</text>
+<text x="685" y="276" text-anchor="middle" font-size="11">получен</text>
+<polygon points="815,207.0 838.0,230 815,253.0 792.0,230" fill="#fff" stroke="#222" stroke-width="1.5"/>
+<path d="M807,222 L823,238 M823,222 L807,238" stroke="#222" stroke-width="3"/>
+<text x="815" y="267" text-anchor="middle" font-size="11">Статус записи</text>
+<text x="815" y="281" text-anchor="middle" font-size="11">«Действует»?</text>
+<circle cx="945" cy="230" r="18.0" fill="#fff" stroke="#222" stroke-width="4"/>
+<text x="945" y="262" text-anchor="middle" font-size="11">Допуск есть</text>
+<circle cx="815" cy="140" r="18.0" fill="#fff" stroke="#222" stroke-width="4"/>
+<text x="908.211" y="137" text-anchor="middle" font-size="11">Допуска нет: запись не</text>
+<text x="908.211" y="151" text-anchor="middle" font-size="11">«Действует»</text>
+<rect x="629.0" y="328.0" width="112" height="84" rx="9" fill="#fff" stroke="#222" stroke-width="1.5"/>
+<text x="685" y="356" text-anchor="middle" font-size="11">Взять</text>
+<text x="685" y="369" text-anchor="middle" font-size="11">последний</text>
+<text x="685" y="382" text-anchor="middle" font-size="11">статус из кэша</text>
+<text x="685" y="395" text-anchor="middle" font-size="11">и определить</text>
+<text x="685" y="408" text-anchor="middle" font-size="11">его возраст</text>
+<text x="642.0" y="347.0" text-anchor="middle" font-size="14">⚙</text>
+<polygon points="815,347.0 838.0,370 815,393.0 792.0,370" fill="#fff" stroke="#222" stroke-width="1.5"/>
+<path d="M807,362 L823,378 M823,362 L807,378" stroke="#222" stroke-width="3"/>
+<text x="815" y="327" text-anchor="middle" font-size="11">Кэш не старше</text>
+<text x="815" y="341" text-anchor="middle" font-size="11">24 ч?</text>
+<polygon points="945,347.0 968.0,370 945,393.0 922.0,370" fill="#fff" stroke="#222" stroke-width="1.5"/>
+<path d="M937,362 L953,378 M953,362 L937,378" stroke="#222" stroke-width="3"/>
+<text x="945" y="327" text-anchor="middle" font-size="11">Статус в кэше</text>
+<text x="945" y="341" text-anchor="middle" font-size="11">«Действует»?</text>
+<circle cx="1075" cy="370" r="18.0" fill="#fff" stroke="#222" stroke-width="4"/>
+<text x="1075" y="402" text-anchor="middle" font-size="11">Допуск есть</text>
+<circle cx="945" cy="436" r="18.0" fill="#fff" stroke="#222" stroke-width="4"/>
+<text x="1006.16" y="440" text-anchor="middle" font-size="11">Допуска нет</text>
+<polygon points="815,457.0 838.0,480 815,503.0 792.0,480" fill="#fff" stroke="#222" stroke-width="1.5"/>
+<path d="M807,472 L823,488 M823,472 L807,488" stroke="#222" stroke-width="3"/>
+<text x="736.93" y="477" text-anchor="middle" font-size="11">Объект уже был</text>
+<text x="736.93" y="491" text-anchor="middle" font-size="11">допущен ранее?</text>
+<rect x="899.0" y="488.0" width="112" height="84" rx="9" fill="#fff" stroke="#222" stroke-width="1.5"/>
+<text x="955" y="522.5" text-anchor="middle" font-size="11">Предупредить</text>
+<text x="955" y="535.5" text-anchor="middle" font-size="11">менеджера ТО:</text>
+<text x="955" y="548.5" text-anchor="middle" font-size="11">данные реестра</text>
+<text x="955" y="561.5" text-anchor="middle" font-size="11">устарели</text>
+<rect x="906.0" y="496.0" width="14" height="10" fill="#222" stroke="#222"/><path d="M906.0,496.0 L913.0,502.0 L920.0,496.0" fill="none" stroke="#fff"/>
+<circle cx="1095" cy="530" r="18.0" fill="#fff" stroke="#222" stroke-width="4"/>
+<text x="1095" y="562" text-anchor="middle" font-size="11">Допуск есть (с</text>
+<text x="1095" y="576" text-anchor="middle" font-size="11">предупреждением)</text>
+<circle cx="815" cy="575" r="18.0" fill="#fff" stroke="#222" stroke-width="4"/>
+<text x="901.844" y="572" text-anchor="middle" font-size="11">Допуска нет: данные</text>
+<text x="901.844" y="586" text-anchor="middle" font-size="11">реестра устарели</text>
+<rect x="430" y="168" width="26.3594" height="14" fill="#fff" fill-opacity="0.85"/>
+<text x="443.18" y="179" text-anchor="middle" font-size="10.5" fill="#1a3d7c">нет</text>
+<rect x="452" y="214" width="20.3438" height="14" fill="#fff" fill-opacity="0.85"/>
+<text x="462.172" y="225" text-anchor="middle" font-size="10.5" fill="#1a3d7c">да</text>
+<rect x="842" y="214" width="20.3438" height="14" fill="#fff" fill-opacity="0.85"/>
+<text x="852.172" y="225" text-anchor="middle" font-size="10.5" fill="#1a3d7c">да</text>
+<rect x="820" y="168" width="26.3594" height="14" fill="#fff" fill-opacity="0.85"/>
+<text x="833.18" y="179" text-anchor="middle" font-size="10.5" fill="#1a3d7c">нет</text>
+<rect x="842" y="354" width="20.3438" height="14" fill="#fff" fill-opacity="0.85"/>
+<text x="852.172" y="365" text-anchor="middle" font-size="10.5" fill="#1a3d7c">да</text>
+<rect x="972" y="354" width="20.3438" height="14" fill="#fff" fill-opacity="0.85"/>
+<text x="982.172" y="365" text-anchor="middle" font-size="10.5" fill="#1a3d7c">да</text>
+<rect x="950" y="394" width="26.3594" height="14" fill="#fff" fill-opacity="0.85"/>
+<text x="963.18" y="405" text-anchor="middle" font-size="10.5" fill="#1a3d7c">нет</text>
+<rect x="820" y="398" width="26.3594" height="14" fill="#fff" fill-opacity="0.85"/>
+<text x="833.18" y="409" text-anchor="middle" font-size="10.5" fill="#1a3d7c">нет</text>
+<rect x="842" y="464" width="20.3438" height="14" fill="#fff" fill-opacity="0.85"/>
+<text x="852.172" y="475" text-anchor="middle" font-size="10.5" fill="#1a3d7c">да</text>
+<rect x="820" y="510" width="26.3594" height="14" fill="#fff" fill-opacity="0.85"/>
+<text x="833.18" y="521" text-anchor="middle" font-size="10.5" fill="#1a3d7c">нет</text>
+<rect x="560" y="72" width="95.125" height="14" fill="#fff" fill-opacity="0.85"/>
+<text x="607.562" y="83" text-anchor="middle" font-size="10.5" fill="#1a3d7c">Запрос статуса</text>
+<rect x="690" y="72" width="89.4219" height="14" fill="#fff" fill-opacity="0.85"/>
+<text x="734.711" y="83" text-anchor="middle" font-size="10.5" fill="#1a3d7c">Статус записи</text>
+<path d="M147,380 L135,380 L135,470 L147,470" fill="none" stroke="#222"/>
+<text x="142" y="394" font-size="10.5" fill="#333">BR-01: допуск = действующий договор + запись</text>
+<text x="142" y="407" font-size="10.5" fill="#333">в Едином реестре КСР со статусом «Действует».</text>
+<text x="142" y="420" font-size="10.5" fill="#333">При недоступности реестра — кэш не старше</text>
+<text x="142" y="433" font-size="10.5" fill="#333">24 ч (EXC-5): новые объекты не допускаются,</text>
+<text x="142" y="446" font-size="10.5" fill="#333">уже допущенные работают с предупреждением</text>
+<text x="142" y="459" font-size="10.5" fill="#333">менеджеру.</text>
+<path d="M147,490 L135,490 L135,552 L147,552" fill="none" stroke="#222"/>
+<text x="142" y="504" font-size="10.5" fill="#333">Результат «Допуска нет» ведёт к блокировке</text>
+<text x="142" y="517" font-size="10.5" fill="#333">редактирования и stop-sale по всем каналам</text>
+<text x="142" y="530" font-size="10.5" fill="#333">(EXC-3, схема 1).</text>
+</svg>

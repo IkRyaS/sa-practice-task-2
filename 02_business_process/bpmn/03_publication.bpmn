@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Definitions_03_publication" targetNamespace="http://bpmn.io/schema/bpmn" exporter="sa-practice-task-2" exporterVersion="1.0">
+  <bpmn:collaboration id="Collab_03_publication">
+    <bpmn:participant id="P_Ch" name="Каналы продаж (B2C-сайт и приложение, B2B API агентств, OTA)" />
+    <bpmn:participant id="P_TO" name="Туроператор" processRef="Proc_P_TO" />
+    <bpmn:messageFlow id="MF_30" name="Пакет изменений" sourceRef="sT1" targetRef="P_Ch" />
+    <bpmn:messageFlow id="MF_31" name="ACK" sourceRef="P_Ch" targetRef="sA" />
+    <bpmn:messageFlow id="MF_32" name="Ошибка" sourceRef="P_Ch" targetRef="sB" />
+    <bpmn:messageFlow id="MF_33" name="Stop-sale в канале" sourceRef="sT2" targetRef="P_Ch" />
+  </bpmn:collaboration>
+  <bpmn:process id="Proc_P_TO" name="Туроператор" isExecutable="false">
+    <bpmn:laneSet id="LaneSet_P_TO">
+      <bpmn:lane id="L_Sys" name="Платформа (система)">
+        <bpmn:flowNodeRef>S</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gs</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Tp</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Tb</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gm</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>SP</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gr</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Tok</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>E1</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Tpart</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Trec</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gc</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Tfin</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>E2</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="L_Adm" name="Администратор системы">
+        <bpmn:flowNodeRef>TA</bpmn:flowNodeRef>
+      </bpmn:lane>
+    </bpmn:laneSet>
+      <bpmn:startEvent id="S" name="Изменение готово к публикации">
+        <bpmn:outgoing>SF_1</bpmn:outgoing>
+      </bpmn:startEvent>
+      <bpmn:exclusiveGateway id="Gs" name="Это stop-sale?">
+        <bpmn:incoming>SF_1</bpmn:incoming>
+        <bpmn:outgoing>SF_2</bpmn:outgoing>
+        <bpmn:outgoing>SF_3</bpmn:outgoing>
+      </bpmn:exclusiveGateway>
+      <bpmn:serviceTask id="Tp" name="Публиковать с высоким приоритетом, вне пакетирования">
+        <bpmn:incoming>SF_2</bpmn:incoming>
+        <bpmn:outgoing>SF_4</bpmn:outgoing>
+      </bpmn:serviceTask>
+      <bpmn:serviceTask id="Tb" name="Сгруппировать изменения «объект × канал» в пакет (окно 60 с)">
+        <bpmn:incoming>SF_3</bpmn:incoming>
+        <bpmn:outgoing>SF_5</bpmn:outgoing>
+      </bpmn:serviceTask>
+      <bpmn:exclusiveGateway id="Gm" name="">
+        <bpmn:incoming>SF_4</bpmn:incoming>
+        <bpmn:incoming>SF_5</bpmn:incoming>
+        <bpmn:outgoing>SF_19</bpmn:outgoing>
+      </bpmn:exclusiveGateway>
+      <bpmn:subProcess id="SP" name="Публикация в один канал (для каждого канала параллельно: B2C, B2B API, OTA)">
+        <bpmn:incoming>SF_19</bpmn:incoming>
+        <bpmn:outgoing>SF_20</bpmn:outgoing>
+        <bpmn:multiInstanceLoopCharacteristics />
+        <bpmn:startEvent id="sS" name="">
+          <bpmn:outgoing>SF_6</bpmn:outgoing>
+        </bpmn:startEvent>
+        <bpmn:sendTask id="sT1" name="Отправить пакет в канал">
+          <bpmn:incoming>SF_6</bpmn:incoming>
+          <bpmn:incoming>SF_17</bpmn:incoming>
+          <bpmn:outgoing>SF_7</bpmn:outgoing>
+        </bpmn:sendTask>
+        <bpmn:eventBasedGateway id="sEG" name="" eventGatewayType="Exclusive">
+          <bpmn:incoming>SF_7</bpmn:incoming>
+          <bpmn:outgoing>SF_8</bpmn:outgoing>
+          <bpmn:outgoing>SF_9</bpmn:outgoing>
+          <bpmn:outgoing>SF_10</bpmn:outgoing>
+        </bpmn:eventBasedGateway>
+        <bpmn:intermediateCatchEvent id="sA" name="ACK получен">
+          <bpmn:incoming>SF_8</bpmn:incoming>
+          <bpmn:outgoing>SF_11</bpmn:outgoing>
+          <bpmn:messageEventDefinition id="sA_med" messageRef="Msg_sA" />
+        </bpmn:intermediateCatchEvent>
+        <bpmn:intermediateCatchEvent id="sB" name="Ошибка канала (5xx, 429, формат)">
+          <bpmn:incoming>SF_9</bpmn:incoming>
+          <bpmn:outgoing>SF_12</bpmn:outgoing>
+          <bpmn:messageEventDefinition id="sB_med" messageRef="Msg_sB" />
+        </bpmn:intermediateCatchEvent>
+        <bpmn:intermediateCatchEvent id="sC" name="Таймаут ответа канала">
+          <bpmn:incoming>SF_10</bpmn:incoming>
+          <bpmn:outgoing>SF_13</bpmn:outgoing>
+          <bpmn:timerEventDefinition id="sC_ted" />
+        </bpmn:intermediateCatchEvent>
+        <bpmn:endEvent id="sEnd1" name="Канал обновлён">
+          <bpmn:incoming>SF_11</bpmn:incoming>
+        </bpmn:endEvent>
+        <bpmn:exclusiveGateway id="sGx" name="">
+          <bpmn:incoming>SF_12</bpmn:incoming>
+          <bpmn:incoming>SF_13</bpmn:incoming>
+          <bpmn:outgoing>SF_14</bpmn:outgoing>
+        </bpmn:exclusiveGateway>
+        <bpmn:exclusiveGateway id="sG2" name="Попытки исчерпаны (4 из 4)?">
+          <bpmn:incoming>SF_14</bpmn:incoming>
+          <bpmn:outgoing>SF_15</bpmn:outgoing>
+          <bpmn:outgoing>SF_16</bpmn:outgoing>
+        </bpmn:exclusiveGateway>
+        <bpmn:intermediateCatchEvent id="sW" name="Пауза 1, 2, 4 или 8 мин">
+          <bpmn:incoming>SF_16</bpmn:incoming>
+          <bpmn:outgoing>SF_17</bpmn:outgoing>
+          <bpmn:timerEventDefinition id="sW_ted" />
+        </bpmn:intermediateCatchEvent>
+        <bpmn:sendTask id="sT2" name="E2–E3. Канал → «Ошибка синхронизации»; fail-safe: закрыть продажи в канале">
+          <bpmn:incoming>SF_15</bpmn:incoming>
+          <bpmn:outgoing>SF_18</bpmn:outgoing>
+        </bpmn:sendTask>
+        <bpmn:endEvent id="sEnd2" name="Канал в fail-safe">
+          <bpmn:incoming>SF_18</bpmn:incoming>
+        </bpmn:endEvent>
+        <bpmn:sequenceFlow id="SF_6" name="" sourceRef="sS" targetRef="sT1" />
+        <bpmn:sequenceFlow id="SF_7" name="" sourceRef="sT1" targetRef="sEG" />
+        <bpmn:sequenceFlow id="SF_8" name="" sourceRef="sEG" targetRef="sA" />
+        <bpmn:sequenceFlow id="SF_9" name="" sourceRef="sEG" targetRef="sB" />
+        <bpmn:sequenceFlow id="SF_10" name="" sourceRef="sEG" targetRef="sC" />
+        <bpmn:sequenceFlow id="SF_11" name="" sourceRef="sA" targetRef="sEnd1" />
+        <bpmn:sequenceFlow id="SF_12" name="" sourceRef="sB" targetRef="sGx" />
+        <bpmn:sequenceFlow id="SF_13" name="" sourceRef="sC" targetRef="sGx" />
+        <bpmn:sequenceFlow id="SF_14" name="" sourceRef="sGx" targetRef="sG2" />
+        <bpmn:sequenceFlow id="SF_15" name="да" sourceRef="sG2" targetRef="sT2" />
+        <bpmn:sequenceFlow id="SF_16" name="нет" sourceRef="sG2" targetRef="sW" />
+        <bpmn:sequenceFlow id="SF_17" name="" sourceRef="sW" targetRef="sT1" />
+        <bpmn:sequenceFlow id="SF_18" name="" sourceRef="sT2" targetRef="sEnd2" />
+      </bpmn:subProcess>
+      <bpmn:exclusiveGateway id="Gr" name="Все каналы подтвердили ACK?">
+        <bpmn:incoming>SF_20</bpmn:incoming>
+        <bpmn:outgoing>SF_21</bpmn:outgoing>
+        <bpmn:outgoing>SF_23</bpmn:outgoing>
+      </bpmn:exclusiveGateway>
+      <bpmn:serviceTask id="Tok" name="Установить статус «Опубликовано»">
+        <bpmn:incoming>SF_21</bpmn:incoming>
+        <bpmn:outgoing>SF_22</bpmn:outgoing>
+      </bpmn:serviceTask>
+      <bpmn:endEvent id="E1" name="Изменение опубликовано">
+        <bpmn:incoming>SF_22</bpmn:incoming>
+      </bpmn:endEvent>
+      <bpmn:serviceTask id="Tpart" name="E2, E4. Статус «Опубликовано частично»; создать инцидент, уведомить администратора и менеджера ТО">
+        <bpmn:incoming>SF_23</bpmn:incoming>
+        <bpmn:outgoing>SF_24</bpmn:outgoing>
+      </bpmn:serviceTask>
+      <bpmn:userTask id="TA" name="E5. Диагностировать причину, устранить, запустить повторную публикацию">
+        <bpmn:incoming>SF_24</bpmn:incoming>
+        <bpmn:incoming>SF_29</bpmn:incoming>
+        <bpmn:outgoing>SF_25</bpmn:outgoing>
+      </bpmn:userTask>
+      <bpmn:serviceTask id="Trec" name="E6. Сверить остатки с каналом (reconciliation)">
+        <bpmn:incoming>SF_25</bpmn:incoming>
+        <bpmn:outgoing>SF_26</bpmn:outgoing>
+      </bpmn:serviceTask>
+      <bpmn:exclusiveGateway id="Gc" name="Данные совпали, ACK получен?">
+        <bpmn:incoming>SF_26</bpmn:incoming>
+        <bpmn:outgoing>SF_27</bpmn:outgoing>
+        <bpmn:outgoing>SF_29</bpmn:outgoing>
+      </bpmn:exclusiveGateway>
+      <bpmn:serviceTask id="Tfin" name="Снять fail-safe, закрыть инцидент, уведомить участников">
+        <bpmn:incoming>SF_27</bpmn:incoming>
+        <bpmn:outgoing>SF_28</bpmn:outgoing>
+      </bpmn:serviceTask>
+      <bpmn:endEvent id="E2" name="Инцидент закрыт">
+        <bpmn:incoming>SF_28</bpmn:incoming>
+      </bpmn:endEvent>
+    <bpmn:sequenceFlow id="SF_1" name="" sourceRef="S" targetRef="Gs" />
+    <bpmn:sequenceFlow id="SF_2" name="да" sourceRef="Gs" targetRef="Tp" />
+    <bpmn:sequenceFlow id="SF_3" name="нет" sourceRef="Gs" targetRef="Tb" />
+    <bpmn:sequenceFlow id="SF_4" name="" sourceRef="Tp" targetRef="Gm" />
+    <bpmn:sequenceFlow id="SF_5" name="" sourceRef="Tb" targetRef="Gm" />
+    <bpmn:sequenceFlow id="SF_19" name="" sourceRef="Gm" targetRef="SP" />
+    <bpmn:sequenceFlow id="SF_20" name="" sourceRef="SP" targetRef="Gr" />
+    <bpmn:sequenceFlow id="SF_21" name="да" sourceRef="Gr" targetRef="Tok" />
+    <bpmn:sequenceFlow id="SF_22" name="" sourceRef="Tok" targetRef="E1" />
+    <bpmn:sequenceFlow id="SF_23" name="нет" sourceRef="Gr" targetRef="Tpart" />
+    <bpmn:sequenceFlow id="SF_24" name="" sourceRef="Tpart" targetRef="TA" />
+    <bpmn:sequenceFlow id="SF_25" name="" sourceRef="TA" targetRef="Trec" />
+    <bpmn:sequenceFlow id="SF_26" name="" sourceRef="Trec" targetRef="Gc" />
+    <bpmn:sequenceFlow id="SF_27" name="да" sourceRef="Gc" targetRef="Tfin" />
+    <bpmn:sequenceFlow id="SF_28" name="" sourceRef="Tfin" targetRef="E2" />
+    <bpmn:sequenceFlow id="SF_29" name="нет" sourceRef="Gc" targetRef="TA" />
+    <bpmn:textAnnotation id="N1"><bpmn:text>BR-13: изменения по паре «объект × канал» группируются в пакет с окном 60 с (stop-sale — вне пакетирования). Повторы при сбое через 1, 2, 4, 8 минут (4 попытки, всего 15 минут), идемпотентно. Канал без актуальных данных &gt; 15 минут закрывается (fail-safe), чтобы исключить продажу по устаревшему остатку (BG-3).</bpmn:text></bpmn:textAnnotation>
+    <bpmn:textAnnotation id="N2"><bpmn:text>Каналы публикуются независимо: сбой одного канала не блокирует остальные. Статус каждого канала хранится отдельно.</bpmn:text></bpmn:textAnnotation>
+  </bpmn:process>
+  <bpmn:message id="Msg_sA" name="ACK канала" />
+  <bpmn:message id="Msg_sB" name="Ошибка канала" />
+  <bpmndi:BPMNDiagram id="Diagram_03_publication">
+    <bpmndi:BPMNPlane id="Plane_03_publication" bpmnElement="Collab_03_publication">
+      <bpmndi:BPMNShape id="P_Ch_di" bpmnElement="P_Ch" isHorizontal="true"><dc:Bounds x="560" y="20" width="900" height="44" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="P_TO_di" bpmnElement="P_TO" isHorizontal="true"><dc:Bounds x="20" y="90" width="2110" height="720" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="L_Sys_di" bpmnElement="L_Sys" isHorizontal="true"><dc:Bounds x="50" y="90" width="2080" height="560" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="L_Adm_di" bpmnElement="L_Adm" isHorizontal="true"><dc:Bounds x="50" y="650" width="2080" height="160" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="S_di" bpmnElement="S"><dc:Bounds x="172" y="362" width="36" height="36" /><bpmndi:BPMNLabel><dc:Bounds x="133.711" y="401" width="112.578" height="28" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gs_di" bpmnElement="Gs" isMarkerVisible="true"><dc:Bounds x="267" y="357" width="46" height="46" /><bpmndi:BPMNLabel><dc:Bounds x="259.062" y="406" width="61.875" height="28" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Tp_di" bpmnElement="Tp"><dc:Bounds x="344" y="208" width="112" height="84" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Tb_di" bpmnElement="Tb"><dc:Bounds x="344" y="338" width="112" height="84" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gm_di" bpmnElement="Gm" isMarkerVisible="true"><dc:Bounds x="487" y="357" width="46" height="46" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SP_di" bpmnElement="SP" isExpanded="true"><dc:Bounds x="600" y="230" width="900" height="380" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="sS_di" bpmnElement="sS"><dc:Bounds x="642" y="362" width="36" height="36" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="sT1_di" bpmnElement="sT1"><dc:Bounds x="704" y="341" width="112" height="78" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="sEG_di" bpmnElement="sEG"><dc:Bounds x="847" y="357" width="46" height="46" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="sA_di" bpmnElement="sA"><dc:Bounds x="917" y="267" width="36" height="36" /><bpmndi:BPMNLabel><dc:Bounds x="957" y="278" width="79.6719" height="14" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="sB_di" bpmnElement="sB"><dc:Bounds x="982" y="362" width="36" height="36" /><bpmndi:BPMNLabel><dc:Bounds x="958.57" y="401" width="82.8594" height="42" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="sC_di" bpmnElement="sC"><dc:Bounds x="1047" y="457" width="36" height="36" /><bpmndi:BPMNLabel><dc:Bounds x="1019.95" y="496" width="90.0938" height="28" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="sEnd1_di" bpmnElement="sEnd1"><dc:Bounds x="1212" y="267" width="36" height="36" /><bpmndi:BPMNLabel><dc:Bounds x="1180.05" y="306" width="99.9062" height="14" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="sGx_di" bpmnElement="sGx" isMarkerVisible="true"><dc:Bounds x="1117" y="404" width="46" height="46" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="sG2_di" bpmnElement="sG2" isMarkerVisible="true"><dc:Bounds x="1217" y="404" width="46" height="46" /><bpmndi:BPMNLabel><dc:Bounds x="1189.73" y="359" width="100.547" height="42" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="sW_di" bpmnElement="sW"><dc:Bounds x="1222" y="512" width="36" height="36" /><bpmndi:BPMNLabel><dc:Bounds x="1262" y="516" width="113.938" height="28" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="sT2_di" bpmnElement="sT2"><dc:Bounds x="1297" y="379" width="136" height="96" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="sEnd2_di" bpmnElement="sEnd2"><dc:Bounds x="1452" y="409" width="36" height="36" /><bpmndi:BPMNLabel><dc:Bounds x="1420.6" y="448" width="98.7969" height="14" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gr_di" bpmnElement="Gr" isMarkerVisible="true"><dc:Bounds x="1577" y="357" width="46" height="46" /><bpmndi:BPMNLabel><dc:Bounds x="1542.64" y="326" width="114.719" height="28" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Tok_di" bpmnElement="Tok"><dc:Bounds x="1654" y="341" width="112" height="78" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="E1_di" bpmnElement="E1"><dc:Bounds x="1797" y="362" width="36" height="36" /><bpmndi:BPMNLabel><dc:Bounds x="1771.04" y="401" width="87.9219" height="28" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Tpart_di" bpmnElement="Tpart"><dc:Bounds x="1530" y="468" width="140" height="104" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="TA_di" bpmnElement="TA"><dc:Bounds x="1530" y="660" width="140" height="100" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Trec_di" bpmnElement="Trec"><dc:Bounds x="1689" y="481" width="112" height="78" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gc_di" bpmnElement="Gc" isMarkerVisible="true"><dc:Bounds x="1842" y="497" width="46" height="46" /><bpmndi:BPMNLabel><dc:Bounds x="1812.23" y="466" width="105.531" height="28" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Tfin_di" bpmnElement="Tfin"><dc:Bounds x="1929" y="478" width="112" height="84" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="E2_di" bpmnElement="E2"><dc:Bounds x="2060" y="502" width="36" height="36" /><bpmndi:BPMNLabel><dc:Bounds x="2023.59" y="541" width="108.828" height="14" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="N1_di" bpmnElement="N1"><dc:Bounds x="60" y="110" width="440" height="90" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="N2_di" bpmnElement="N2"><dc:Bounds x="1640" y="110" width="420" height="70" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SF_1_di" bpmnElement="SF_1"><di:waypoint x="208" y="380" /><di:waypoint x="267" y="380" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SF_2_di" bpmnElement="SF_2"><di:waypoint x="290" y="357" /><di:waypoint x="290" y="250" /><di:waypoint x="344" y="250" /><bpmndi:BPMNLabel><dc:Bounds x="296" y="300" width="20.3438" height="14" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SF_3_di" bpmnElement="SF_3"><di:waypoint x="313" y="380" /><di:waypoint x="344" y="380" /><bpmndi:BPMNLabel><dc:Bounds x="317" y="364" width="26.3594" height="14" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SF_4_di" bpmnElement="SF_4"><di:waypoint x="456" y="250" /><di:waypoint x="510" y="250" /><di:waypoint x="510" y="357" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SF_5_di" bpmnElement="SF_5"><di:waypoint x="456" y="380" /><di:waypoint x="487" y="380" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SF_6_di" bpmnElement="SF_6"><di:waypoint x="678" y="380" /><di:waypoint x="704" y="380" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SF_7_di" bpmnElement="SF_7"><di:waypoint x="816" y="380" /><di:waypoint x="847" y="380" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SF_8_di" bpmnElement="SF_8"><di:waypoint x="870" y="357" /><di:waypoint x="870" y="285" /><di:waypoint x="917" y="285" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SF_9_di" bpmnElement="SF_9"><di:waypoint x="893" y="380" /><di:waypoint x="982" y="380" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SF_10_di" bpmnElement="SF_10"><di:waypoint x="870" y="403" /><di:waypoint x="870" y="475" /><di:waypoint x="1047" y="475" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SF_11_di" bpmnElement="SF_11"><di:waypoint x="953" y="285" /><di:waypoint x="1212" y="285" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SF_12_di" bpmnElement="SF_12"><di:waypoint x="1018" y="380" /><di:waypoint x="1140" y="380" /><di:waypoint x="1140" y="404" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SF_13_di" bpmnElement="SF_13"><di:waypoint x="1083" y="475" /><di:waypoint x="1140" y="475" /><di:waypoint x="1140" y="450" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SF_14_di" bpmnElement="SF_14"><di:waypoint x="1163" y="427" /><di:waypoint x="1217" y="427" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SF_15_di" bpmnElement="SF_15"><di:waypoint x="1263" y="427" /><di:waypoint x="1297" y="427" /><bpmndi:BPMNLabel><dc:Bounds x="1267" y="411" width="20.3438" height="14" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SF_16_di" bpmnElement="SF_16"><di:waypoint x="1240" y="450" /><di:waypoint x="1240" y="512" /><bpmndi:BPMNLabel><dc:Bounds x="1245" y="456" width="26.3594" height="14" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SF_17_di" bpmnElement="SF_17"><di:waypoint x="1222" y="530" /><di:waypoint x="760" y="530" /><di:waypoint x="760" y="419" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SF_18_di" bpmnElement="SF_18"><di:waypoint x="1433" y="427" /><di:waypoint x="1452" y="427" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SF_19_di" bpmnElement="SF_19"><di:waypoint x="533" y="380" /><di:waypoint x="600" y="380" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SF_20_di" bpmnElement="SF_20"><di:waypoint x="1500" y="380" /><di:waypoint x="1577" y="380" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SF_21_di" bpmnElement="SF_21"><di:waypoint x="1623" y="380" /><di:waypoint x="1654" y="380" /><bpmndi:BPMNLabel><dc:Bounds x="1627" y="364" width="20.3438" height="14" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SF_22_di" bpmnElement="SF_22"><di:waypoint x="1766" y="380" /><di:waypoint x="1797" y="380" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SF_23_di" bpmnElement="SF_23"><di:waypoint x="1600" y="403" /><di:waypoint x="1600" y="468" /><bpmndi:BPMNLabel><dc:Bounds x="1605" y="410" width="26.3594" height="14" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SF_24_di" bpmnElement="SF_24"><di:waypoint x="1600" y="572" /><di:waypoint x="1600" y="660" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SF_25_di" bpmnElement="SF_25"><di:waypoint x="1670" y="710" /><di:waypoint x="1745" y="710" /><di:waypoint x="1745" y="559" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SF_26_di" bpmnElement="SF_26"><di:waypoint x="1801" y="520" /><di:waypoint x="1842" y="520" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SF_27_di" bpmnElement="SF_27"><di:waypoint x="1888" y="520" /><di:waypoint x="1929" y="520" /><bpmndi:BPMNLabel><dc:Bounds x="1892" y="504" width="20.3438" height="14" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SF_28_di" bpmnElement="SF_28"><di:waypoint x="2041" y="520" /><di:waypoint x="2060" y="520" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SF_29_di" bpmnElement="SF_29"><di:waypoint x="1865" y="543" /><di:waypoint x="1865" y="790" /><di:waypoint x="1600" y="790" /><di:waypoint x="1600" y="760" /><bpmndi:BPMNLabel><dc:Bounds x="1870" y="640" width="26.3594" height="14" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MF_30_di" bpmnElement="MF_30"><di:waypoint x="760" y="341" /><di:waypoint x="760" y="64" /><bpmndi:BPMNLabel><dc:Bounds x="765" y="72" width="107.828" height="14" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MF_31_di" bpmnElement="MF_31"><di:waypoint x="935" y="64" /><di:waypoint x="935" y="267" /><bpmndi:BPMNLabel><dc:Bounds x="940" y="72" width="28.25" height="14" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MF_32_di" bpmnElement="MF_32"><di:waypoint x="1000" y="64" /><di:waypoint x="1000" y="362" /><bpmndi:BPMNLabel><dc:Bounds x="1005" y="72" width="52.0312" height="14" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MF_33_di" bpmnElement="MF_33"><di:waypoint x="1365" y="379" /><di:waypoint x="1365" y="64" /><bpmndi:BPMNLabel><dc:Bounds x="1370" y="72" width="111.859" height="14" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

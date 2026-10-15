@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Definitions_02_stop_sale" targetNamespace="http://bpmn.io/schema/bpmn" exporter="sa-practice-task-2" exporterVersion="1.0">
+  <bpmn:collaboration id="Collab_02_stop_sale">
+    <bpmn:participant id="P_Hotel" name="Отель-партнёр (Отельер)" processRef="Proc_P_Hotel" />
+    <bpmn:participant id="P_TO" name="Туроператор" processRef="Proc_P_TO" />
+    <bpmn:messageFlow id="MF_18" name="" sourceRef="HA1" targetRef="Pa0" />
+    <bpmn:messageFlow id="MF_19" name="" sourceRef="Pa2" targetRef="HC1" />
+    <bpmn:messageFlow id="MF_20" name="" sourceRef="P15" targetRef="HC2" />
+  </bpmn:collaboration>
+  <bpmn:process id="Proc_P_Hotel" name="Отель-партнёр (Отельер)" isExecutable="false">
+      <bpmn:startEvent id="H0" name="Нужно срочно закрыть продажи (ремонт, авария, ЧС)">
+        <bpmn:outgoing>SF_1</bpmn:outgoing>
+      </bpmn:startEvent>
+      <bpmn:sendTask id="HA1" name="A1. Выбрать даты, категории номеров и причину закрытия">
+        <bpmn:incoming>SF_1</bpmn:incoming>
+        <bpmn:outgoing>SF_2</bpmn:outgoing>
+      </bpmn:sendTask>
+      <bpmn:intermediateCatchEvent id="HC1" name="Число затронутых броней получено">
+        <bpmn:incoming>SF_2</bpmn:incoming>
+        <bpmn:outgoing>SF_3</bpmn:outgoing>
+        <bpmn:messageEventDefinition id="HC1_med" messageRef="Msg_HC1" />
+      </bpmn:intermediateCatchEvent>
+      <bpmn:intermediateCatchEvent id="HC2" name="Уведомление о закрытии получено">
+        <bpmn:incoming>SF_3</bpmn:incoming>
+        <bpmn:outgoing>SF_4</bpmn:outgoing>
+        <bpmn:messageEventDefinition id="HC2_med" messageRef="Msg_HC2" />
+      </bpmn:intermediateCatchEvent>
+      <bpmn:endEvent id="HE" name="Продажи закрыты, брони сохранены">
+        <bpmn:incoming>SF_4</bpmn:incoming>
+      </bpmn:endEvent>
+    <bpmn:sequenceFlow id="SF_1" name="" sourceRef="H0" targetRef="HA1" />
+    <bpmn:sequenceFlow id="SF_2" name="" sourceRef="HA1" targetRef="HC1" />
+    <bpmn:sequenceFlow id="SF_3" name="" sourceRef="HC1" targetRef="HC2" />
+    <bpmn:sequenceFlow id="SF_4" name="" sourceRef="HC2" targetRef="HE" />
+    <bpmn:textAnnotation id="N1"><bpmn:text>BR-11: stop-sale применяется немедленно и без согласования; действует только на новые продажи, подтверждённые брони не отменяются. Закрытие публикуется вне пакетирования (цель BG-2: ≤ 1 мин).</bpmn:text></bpmn:textAnnotation>
+  </bpmn:process>
+  <bpmn:process id="Proc_P_TO" name="Туроператор" isExecutable="false">
+    <bpmn:laneSet id="LaneSet_P_TO">
+      <bpmn:lane id="L_Sys" name="Платформа (система)">
+        <bpmn:flowNodeRef>Pa0</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Pa1</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Pa2</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Pa3</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>F</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>CA</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P15</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>PE</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gor</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Ed</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="L_Mgr" name="Менеджер ТО">
+        <bpmn:flowNodeRef>MT1</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>E1</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>MT2</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>E2</bpmn:flowNodeRef>
+      </bpmn:lane>
+    </bpmn:laneSet>
+      <bpmn:startEvent id="Pa0" name="Получен запрос на закрытие продаж">
+        <bpmn:outgoing>SF_5</bpmn:outgoing>
+        <bpmn:messageEventDefinition id="Pa0_med" messageRef="Msg_Pa0" />
+      </bpmn:startEvent>
+      <bpmn:serviceTask id="Pa1" name="A2. Определить действующие брони и тип квоты">
+        <bpmn:incoming>SF_5</bpmn:incoming>
+        <bpmn:outgoing>SF_6</bpmn:outgoing>
+      </bpmn:serviceTask>
+      <bpmn:intermediateThrowEvent id="Pa2" name="Число броней показано отельеру">
+        <bpmn:incoming>SF_6</bpmn:incoming>
+        <bpmn:outgoing>SF_7</bpmn:outgoing>
+        <bpmn:messageEventDefinition id="Pa2_med" messageRef="Msg_Pa2" />
+      </bpmn:intermediateThrowEvent>
+      <bpmn:serviceTask id="Pa3" name="A3. Применить stop-sale: новая версия, аудит, высокий приоритет">
+        <bpmn:incoming>SF_7</bpmn:incoming>
+        <bpmn:outgoing>SF_8</bpmn:outgoing>
+      </bpmn:serviceTask>
+      <bpmn:parallelGateway id="F" name="">
+        <bpmn:incoming>SF_8</bpmn:incoming>
+        <bpmn:outgoing>SF_9</bpmn:outgoing>
+        <bpmn:outgoing>SF_12</bpmn:outgoing>
+      </bpmn:parallelGateway>
+      <bpmn:callActivity id="CA" name="14. Приоритетная публикация, вне пакетирования (схема 3)" calledElement="Proc_publication">
+        <bpmn:incoming>SF_9</bpmn:incoming>
+        <bpmn:outgoing>SF_10</bpmn:outgoing>
+      </bpmn:callActivity>
+      <bpmn:sendTask id="P15" name="15. Уведомить отельера и менеджера ТО">
+        <bpmn:incoming>SF_10</bpmn:incoming>
+        <bpmn:outgoing>SF_11</bpmn:outgoing>
+      </bpmn:sendTask>
+      <bpmn:endEvent id="PE" name="Закрытие опубликовано">
+        <bpmn:incoming>SF_11</bpmn:incoming>
+      </bpmn:endEvent>
+      <bpmn:inclusiveGateway id="Gor" name="Что требует внимания менеджера?" default="SF_15">
+        <bpmn:incoming>SF_12</bpmn:incoming>
+        <bpmn:outgoing>SF_13</bpmn:outgoing>
+        <bpmn:outgoing>SF_14</bpmn:outgoing>
+        <bpmn:outgoing>SF_15</bpmn:outgoing>
+      </bpmn:inclusiveGateway>
+      <bpmn:endEvent id="Ed" name="Задач менеджеру нет">
+        <bpmn:incoming>SF_15</bpmn:incoming>
+      </bpmn:endEvent>
+      <bpmn:userTask id="MT1" name="A4. Проверить размещение гостей">
+        <bpmn:incoming>SF_13</bpmn:incoming>
+        <bpmn:outgoing>SF_16</bpmn:outgoing>
+      </bpmn:userTask>
+      <bpmn:endEvent id="E1" name="Размещение проверено">
+        <bpmn:incoming>SF_16</bpmn:incoming>
+      </bpmn:endEvent>
+      <bpmn:userTask id="MT2" name="A4. Оценить контрактные последствия (штрафы, компенсация)">
+        <bpmn:incoming>SF_14</bpmn:incoming>
+        <bpmn:outgoing>SF_17</bpmn:outgoing>
+      </bpmn:userTask>
+      <bpmn:endEvent id="E2" name="Последствия оценены">
+        <bpmn:incoming>SF_17</bpmn:incoming>
+      </bpmn:endEvent>
+    <bpmn:sequenceFlow id="SF_5" name="" sourceRef="Pa0" targetRef="Pa1" />
+    <bpmn:sequenceFlow id="SF_6" name="" sourceRef="Pa1" targetRef="Pa2" />
+    <bpmn:sequenceFlow id="SF_7" name="" sourceRef="Pa2" targetRef="Pa3" />
+    <bpmn:sequenceFlow id="SF_8" name="" sourceRef="Pa3" targetRef="F" />
+    <bpmn:sequenceFlow id="SF_9" name="" sourceRef="F" targetRef="CA" />
+    <bpmn:sequenceFlow id="SF_10" name="" sourceRef="CA" targetRef="P15" />
+    <bpmn:sequenceFlow id="SF_11" name="" sourceRef="P15" targetRef="PE" />
+    <bpmn:sequenceFlow id="SF_12" name="" sourceRef="F" targetRef="Gor" />
+    <bpmn:sequenceFlow id="SF_13" name="на закрытые даты есть брони" sourceRef="Gor" targetRef="MT1" />
+    <bpmn:sequenceFlow id="SF_14" name="закрыта коммитментная квота" sourceRef="Gor" targetRef="MT2" />
+    <bpmn:sequenceFlow id="SF_15" name="иначе" sourceRef="Gor" targetRef="Ed" />
+    <bpmn:sequenceFlow id="SF_16" name="" sourceRef="MT1" targetRef="E1" />
+    <bpmn:sequenceFlow id="SF_17" name="" sourceRef="MT2" targetRef="E2" />
+  </bpmn:process>
+  <bpmn:message id="Msg_HC1" name="Число затронутых броней" />
+  <bpmn:message id="Msg_HC2" name="Уведомление о результате" />
+  <bpmn:message id="Msg_Pa0" name="Запрос на закрытие продаж" />
+  <bpmn:message id="Msg_Pa2" name="Число затронутых броней" />
+  <bpmndi:BPMNDiagram id="Diagram_02_stop_sale">
+    <bpmndi:BPMNPlane id="Plane_02_stop_sale" bpmnElement="Collab_02_stop_sale">
+      <bpmndi:BPMNShape id="P_Hotel_di" bpmnElement="P_Hotel" isHorizontal="true"><dc:Bounds x="20" y="20" width="1450" height="170" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="P_TO_di" bpmnElement="P_TO" isHorizontal="true"><dc:Bounds x="20" y="210" width="1450" height="460" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="L_Sys_di" bpmnElement="L_Sys" isHorizontal="true"><dc:Bounds x="50" y="210" width="1420" height="270" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="L_Mgr_di" bpmnElement="L_Mgr" isHorizontal="true"><dc:Bounds x="50" y="480" width="1420" height="190" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="H0_di" bpmnElement="H0"><dc:Bounds x="147" y="87" width="36" height="36" /><bpmndi:BPMNLabel><dc:Bounds x="101.539" y="126" width="126.922" height="42" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="HA1_di" bpmnElement="HA1"><dc:Bounds x="239" y="63" width="112" height="84" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="HC1_di" bpmnElement="HC1"><dc:Bounds x="537" y="87" width="36" height="36" /><bpmndi:BPMNLabel><dc:Bounds x="498.984" y="56" width="112.031" height="28" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="HC2_di" bpmnElement="HC2"><dc:Bounds x="1057" y="87" width="36" height="36" /><bpmndi:BPMNLabel><dc:Bounds x="1015.12" y="56" width="119.766" height="28" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="HE_di" bpmnElement="HE"><dc:Bounds x="1187" y="87" width="36" height="36" /><bpmndi:BPMNLabel><dc:Bounds x="1146.81" y="126" width="116.375" height="28" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Pa0_di" bpmnElement="Pa0"><dc:Bounds x="277" y="262" width="36" height="36" /><bpmndi:BPMNLabel><dc:Bounds x="237.273" y="301" width="115.453" height="28" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Pa1_di" bpmnElement="Pa1"><dc:Bounds x="369" y="238" width="112" height="84" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Pa2_di" bpmnElement="Pa2"><dc:Bounds x="537" y="262" width="36" height="36" /><bpmndi:BPMNLabel><dc:Bounds x="496.508" y="301" width="116.984" height="28" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Pa3_di" bpmnElement="Pa3"><dc:Bounds x="629" y="234" width="112" height="92" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="F_di" bpmnElement="F"><dc:Bounds x="792" y="257" width="46" height="46" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="CA_di" bpmnElement="CA"><dc:Bounds x="883" y="235" width="124" height="90" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="P15_di" bpmnElement="P15"><dc:Bounds x="1019" y="241" width="112" height="78" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="PE_di" bpmnElement="PE"><dc:Bounds x="1187" y="262" width="36" height="36" /><bpmndi:BPMNLabel><dc:Bounds x="1161.04" y="301" width="87.9219" height="28" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gor_di" bpmnElement="Gor"><dc:Bounds x="792" y="387" width="46" height="46" /><bpmndi:BPMNLabel><dc:Bounds x="690" y="438" width="78.8594" height="42" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Ed_di" bpmnElement="Ed"><dc:Bounds x="537" y="392" width="36" height="36" /><bpmndi:BPMNLabel><dc:Bounds x="499.539" y="431" width="110.922" height="28" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="MT1_di" bpmnElement="MT1"><dc:Bounds x="759" y="531" width="112" height="78" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="E1_di" bpmnElement="E1"><dc:Bounds x="927" y="552" width="36" height="36" /><bpmndi:BPMNLabel><dc:Bounds x="905.742" y="591" width="78.5156" height="28" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="MT2_di" bpmnElement="MT2"><dc:Bounds x="1019" y="528" width="112" height="84" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="E2_di" bpmnElement="E2"><dc:Bounds x="1187" y="552" width="36" height="36" /><bpmndi:BPMNLabel><dc:Bounds x="1164.41" y="591" width="81.1719" height="28" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="N1_di" bpmnElement="N1"><dc:Bounds x="255" y="370" width="270" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SF_1_di" bpmnElement="SF_1"><di:waypoint x="183" y="105" /><di:waypoint x="239" y="105" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SF_2_di" bpmnElement="SF_2"><di:waypoint x="351" y="105" /><di:waypoint x="537" y="105" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SF_3_di" bpmnElement="SF_3"><di:waypoint x="573" y="105" /><di:waypoint x="1057" y="105" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SF_4_di" bpmnElement="SF_4"><di:waypoint x="1093" y="105" /><di:waypoint x="1187" y="105" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SF_5_di" bpmnElement="SF_5"><di:waypoint x="313" y="280" /><di:waypoint x="369" y="280" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SF_6_di" bpmnElement="SF_6"><di:waypoint x="481" y="280" /><di:waypoint x="537" y="280" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SF_7_di" bpmnElement="SF_7"><di:waypoint x="573" y="280" /><di:waypoint x="629" y="280" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SF_8_di" bpmnElement="SF_8"><di:waypoint x="741" y="280" /><di:waypoint x="792" y="280" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SF_9_di" bpmnElement="SF_9"><di:waypoint x="838" y="280" /><di:waypoint x="883" y="280" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SF_10_di" bpmnElement="SF_10"><di:waypoint x="1007" y="280" /><di:waypoint x="1019" y="280" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SF_11_di" bpmnElement="SF_11"><di:waypoint x="1131" y="280" /><di:waypoint x="1187" y="280" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SF_12_di" bpmnElement="SF_12"><di:waypoint x="815" y="303" /><di:waypoint x="815" y="387" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SF_13_di" bpmnElement="SF_13"><di:waypoint x="815" y="433" /><di:waypoint x="815" y="531" /><bpmndi:BPMNLabel><dc:Bounds x="820" y="440" width="102.984" height="28" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SF_14_di" bpmnElement="SF_14"><di:waypoint x="838" y="410" /><di:waypoint x="1075" y="410" /><di:waypoint x="1075" y="528" /><bpmndi:BPMNLabel><dc:Bounds x="845" y="376" width="150.266" height="28" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SF_15_di" bpmnElement="SF_15"><di:waypoint x="838" y="410" /><di:waypoint x="537" y="410" /><bpmndi:BPMNLabel><dc:Bounds x="680" y="392" width="40.3438" height="14" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SF_16_di" bpmnElement="SF_16"><di:waypoint x="871" y="570" /><di:waypoint x="927" y="570" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SF_17_di" bpmnElement="SF_17"><di:waypoint x="1131" y="570" /><di:waypoint x="1187" y="570" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MF_18_di" bpmnElement="MF_18"><di:waypoint x="295" y="147" /><di:waypoint x="295" y="262" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MF_19_di" bpmnElement="MF_19"><di:waypoint x="555" y="262" /><di:waypoint x="555" y="123" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MF_20_di" bpmnElement="MF_20"><di:waypoint x="1075" y="241" /><di:waypoint x="1075" y="123" /></bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

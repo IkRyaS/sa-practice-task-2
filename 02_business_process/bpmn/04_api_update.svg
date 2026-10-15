@@ -1,0 +1,204 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2310" height="730" viewBox="0 -60 2310 730" font-family="DejaVu Sans" font-size="11">
+<rect x="0" y="-60" width="2310" height="730" fill="#fff"/>
+<defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#222"/></marker><marker id="am" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10" fill="none" stroke="#222" stroke-width="1.3"/></marker><marker id="co" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="8" markerHeight="8"><circle cx="5" cy="5" r="3.5" fill="#fff" stroke="#222" stroke-width="1.2"/></marker></defs>
+<text x="20" y="-34" font-size="18" font-weight="bold" fill="#1f2d4a">Схема 4. Обновление квот и тарифов через PMS / channel manager по API (ALT-3, EXC-2)</text>
+<rect x="20" y="20" width="2270" height="150" fill="#fff" stroke="#222" stroke-width="1.5"/>
+<line x1="50" y1="20" x2="50" y2="170" stroke="#222" stroke-width="1.5"/>
+<text transform="translate(28,95) rotate(-90)" text-anchor="middle" dominant-baseline="middle" font-size="12" font-weight="bold">PMS / channel</text>
+<text transform="translate(42,95) rotate(-90)" text-anchor="middle" dominant-baseline="middle" font-size="12" font-weight="bold">manager отеля</text>
+<rect x="20" y="190" width="2270" height="460" fill="#fff" stroke="#222" stroke-width="1.5"/>
+<line x1="50" y1="190" x2="50" y2="650" stroke="#222" stroke-width="1.5"/>
+<text transform="translate(35,420) rotate(-90)" text-anchor="middle" dominant-baseline="middle" font-size="12" font-weight="bold">Платформа туроператора (API)</text>
+<rect x="760.0" y="212.0" width="980" height="380" rx="10" fill="#fcfdff" stroke="#222" stroke-width="1.5"/>
+<text x="770.0" y="228.0" font-weight="bold" font-size="11">Обработка строки пакета (дата × категория ×</text>
+<text x="770.0" y="241.0" font-weight="bold" font-size="11">тариф); строки независимы</text>
+<path d="M1245,578.0 v12 M1250,578.0 v12 M1255,578.0 v12" stroke="#222" stroke-width="1.6"/>
+<path d="M203,95 L259,95" fill="none" stroke="#222" stroke-width="1.4" marker-end="url(#ar)"/>
+<path d="M371,95 L1794,95" fill="none" stroke="#222" stroke-width="1.4" marker-end="url(#ar)"/>
+<path d="M1906,95 L1972,95" fill="none" stroke="#222" stroke-width="1.4" marker-end="url(#ar)"/>
+<path d="M333,340 L422,340" fill="none" stroke="#222" stroke-width="1.4" marker-end="url(#ar)"/>
+<path d="M445,317 L445,297" fill="none" stroke="#222" stroke-width="1.4" marker-end="url(#ar)"/>
+<path d="M501,262 L519,262" fill="none" stroke="#222" stroke-width="1.4" marker-end="url(#ar)"/>
+<path d="M631,262 L667,262" fill="none" stroke="#222" stroke-width="1.4" marker-end="url(#ar)"/>
+<path d="M828,340 L864,340" fill="none" stroke="#222" stroke-width="1.4" marker-end="url(#ar)"/>
+<path d="M976,340 L1009,340" fill="none" stroke="#222" stroke-width="1.4" marker-end="url(#ar)"/>
+<path d="M1055,340 L1088,340" fill="none" stroke="#222" stroke-width="1.4" marker-end="url(#ar)"/>
+<path d="M1032,363 L1032,432" fill="none" stroke="#222" stroke-width="1.4" marker-end="url(#ar)"/>
+<path d="M1200,340 L1233,340" fill="none" stroke="#222" stroke-width="1.4" marker-end="url(#ar)"/>
+<path d="M1279,340 L1312,340" fill="none" stroke="#222" stroke-width="1.4" marker-end="url(#ar)"/>
+<path d="M1256,363 L1256,438" fill="none" stroke="#222" stroke-width="1.4" marker-end="url(#ar)"/>
+<path d="M1424,340 L1457,340" fill="none" stroke="#222" stroke-width="1.4" marker-end="url(#ar)"/>
+<path d="M1503,340 L1536,340" fill="none" stroke="#222" stroke-width="1.4" marker-end="url(#ar)"/>
+<path d="M1480,363 L1480,441" fill="none" stroke="#222" stroke-width="1.4" marker-end="url(#ar)"/>
+<path d="M1648,340 L1672,340" fill="none" stroke="#222" stroke-width="1.4" marker-end="url(#ar)"/>
+<path d="M1094,480 L1132,480" fill="none" stroke="#222" stroke-width="1.4" marker-end="url(#ar)"/>
+<path d="M1318,480 L1354,480" fill="none" stroke="#222" stroke-width="1.4" marker-end="url(#ar)"/>
+<path d="M1536,480 L1572,480" fill="none" stroke="#222" stroke-width="1.4" marker-end="url(#ar)"/>
+<path d="M468,340 L760,340" fill="none" stroke="#222" stroke-width="1.4" marker-end="url(#ar)"/>
+<path d="M1740,340 L1794,340" fill="none" stroke="#222" stroke-width="1.4" marker-end="url(#ar)"/>
+<path d="M1906,340 L1947,340" fill="none" stroke="#222" stroke-width="1.4" marker-end="url(#ar)"/>
+<path d="M1993,340 L2038,340" fill="none" stroke="#222" stroke-width="1.4" marker-end="url(#ar)"/>
+<path d="M2162,340 L2187,340" fill="none" stroke="#222" stroke-width="1.4" marker-end="url(#ar)"/>
+<path d="M1970,363 L1970,412" fill="none" stroke="#222" stroke-width="1.4" marker-end="url(#ar)"/>
+<path d="M315,137 L315,322" fill="none" stroke="#222" stroke-width="1.2" stroke-dasharray="6,4" marker-start="url(#co)" marker-end="url(#am)"/>
+<path d="M1860,298 L1860,134" fill="none" stroke="#222" stroke-width="1.2" stroke-dasharray="6,4" marker-start="url(#co)" marker-end="url(#am)"/>
+<path d="M575,227 L575,180 L1820,180 L1820,134" fill="none" stroke="#222" stroke-width="1.2" stroke-dasharray="6,4" marker-start="url(#co)" marker-end="url(#am)"/>
+<circle cx="185" cy="95" r="18.0" fill="#fff" stroke="#222" stroke-width="1.5"/>
+<text x="185" y="127" text-anchor="middle" font-size="11">Изменились квоты</text>
+<text x="185" y="141" text-anchor="middle" font-size="11">или тарифы в PMS</text>
+<rect x="259.0" y="53.0" width="112" height="84" rx="9" fill="#fff" stroke="#222" stroke-width="1.5"/>
+<text x="315" y="87.5" text-anchor="middle" font-size="11">Отправить</text>
+<text x="315" y="100.5" text-anchor="middle" font-size="11">пакет</text>
+<text x="315" y="113.5" text-anchor="middle" font-size="11">изменений с</text>
+<text x="315" y="126.5" text-anchor="middle" font-size="11">Idempotency-Key</text>
+<rect x="266.0" y="61.0" width="14" height="10" fill="#222" stroke="#222"/><path d="M266.0,61.0 L273.0,67.0 L280.0,61.0" fill="none" stroke="#fff"/>
+<rect x="1794.0" y="56.0" width="112" height="78" rx="9" fill="#fff" stroke="#222" stroke-width="1.5"/>
+<text x="1850" y="94" text-anchor="middle" font-size="11">Принять статус</text>
+<text x="1850" y="107" text-anchor="middle" font-size="11">по каждой</text>
+<text x="1850" y="120" text-anchor="middle" font-size="11">строке</text>
+<rect x="1801.0" y="64.0" width="14" height="10" fill="#fff" stroke="#222"/><path d="M1801.0,64.0 L1808.0,70.0 L1815.0,64.0" fill="none" stroke="#222"/>
+<circle cx="1990" cy="95" r="18.0" fill="#fff" stroke="#222" stroke-width="4"/>
+<text x="1990" y="127" text-anchor="middle" font-size="11">Результат</text>
+<text x="1990" y="141" text-anchor="middle" font-size="11">обработан</text>
+<circle cx="315" cy="340" r="18.0" fill="#fff" stroke="#222" stroke-width="1.5"/>
+<rect x="308" y="335" width="14" height="10" fill="#fff" stroke="#222"/><path d="M308,335 L315,341 L322,335" fill="none" stroke="#222"/>
+<text x="315" y="372" text-anchor="middle" font-size="11">Получен пакет</text>
+<text x="315" y="386" text-anchor="middle" font-size="11">изменений</text>
+<polygon points="445,317.0 468.0,340 445,363.0 422.0,340" fill="#fff" stroke="#222" stroke-width="1.5"/>
+<path d="M437,332 L453,348 M453,332 L437,348" stroke="#222" stroke-width="3"/>
+<text x="425.891" y="379" text-anchor="middle" font-size="11">Idempotency-Key</text>
+<text x="425.891" y="393" text-anchor="middle" font-size="11">уже обработан?</text>
+<rect x="389.0" y="227.0" width="112" height="70" rx="9" fill="#fff" stroke="#222" stroke-width="1.5"/>
+<text x="445" y="261" text-anchor="middle" font-size="11">Взять</text>
+<text x="445" y="274" text-anchor="middle" font-size="11">сохранённый</text>
+<text x="445" y="287" text-anchor="middle" font-size="11">результат</text>
+<text x="402.0" y="246.0" text-anchor="middle" font-size="14">⚙</text>
+<rect x="519.0" y="227.0" width="112" height="70" rx="9" fill="#fff" stroke="#222" stroke-width="1.5"/>
+<text x="575" y="261" text-anchor="middle" font-size="11">Вернуть</text>
+<text x="575" y="274" text-anchor="middle" font-size="11">сохранённый</text>
+<text x="575" y="287" text-anchor="middle" font-size="11">результат</text>
+<rect x="526.0" y="235.0" width="14" height="10" fill="#222" stroke="#222"/><path d="M526.0,235.0 L533.0,241.0 L540.0,235.0" fill="none" stroke="#fff"/>
+<circle cx="685" cy="262" r="18.0" fill="#fff" stroke="#222" stroke-width="4"/>
+<text x="685" y="294" text-anchor="middle" font-size="11">Повтор обработан</text>
+<circle cx="810" cy="340" r="18.0" fill="#fff" stroke="#222" stroke-width="1.5"/>
+<rect x="864.0" y="301.0" width="112" height="78" rx="9" fill="#fff" stroke="#222" stroke-width="1.5"/>
+<text x="920" y="339" text-anchor="middle" font-size="11">Проверить</text>
+<text x="920" y="352" text-anchor="middle" font-size="11">версию объекта</text>
+<text x="920" y="365" text-anchor="middle" font-size="11">(ETag / If-Match)</text>
+<text x="877.0" y="320.0" text-anchor="middle" font-size="14">⚙</text>
+<polygon points="1032,317.0 1055.0,340 1032,363.0 1009.0,340" fill="#fff" stroke="#222" stroke-width="1.5"/>
+<path d="M1024,332 L1040,348 M1040,332 L1024,348" stroke="#222" stroke-width="3"/>
+<text x="1032" y="297" text-anchor="middle" font-size="11">Версия</text>
+<text x="1032" y="311" text-anchor="middle" font-size="11">актуальна?</text>
+<rect x="1088.0" y="301.0" width="112" height="78" rx="9" fill="#fff" stroke="#222" stroke-width="1.5"/>
+<text x="1144" y="339" text-anchor="middle" font-size="11">7. Валидировать</text>
+<text x="1144" y="352" text-anchor="middle" font-size="11">строку</text>
+<text x="1144" y="365" text-anchor="middle" font-size="11">(BR-03…09)</text>
+<text x="1101.0" y="320.0" text-anchor="middle" font-size="14">⚙</text>
+<polygon points="1256,317.0 1279.0,340 1256,363.0 1233.0,340" fill="#fff" stroke="#222" stroke-width="1.5"/>
+<path d="M1248,332 L1264,348 M1264,332 L1248,348" stroke="#222" stroke-width="3"/>
+<text x="1256" y="311" text-anchor="middle" font-size="11">Есть ошибки?</text>
+<rect x="1312.0" y="301.0" width="112" height="78" rx="9" fill="#fff" stroke="#222" stroke-width="1.5"/>
+<text x="1368" y="332.5" text-anchor="middle" font-size="11">8.</text>
+<text x="1368" y="345.5" text-anchor="middle" font-size="11">Классифицировать</text>
+<text x="1368" y="358.5" text-anchor="middle" font-size="11">изменение</text>
+<text x="1368" y="371.5" text-anchor="middle" font-size="11">(BR-10)</text>
+<text x="1325.0" y="320.0" text-anchor="middle" font-size="14">⚙</text>
+<polygon points="1480,317.0 1503.0,340 1480,363.0 1457.0,340" fill="#fff" stroke="#222" stroke-width="1.5"/>
+<path d="M1472,332 L1488,348 M1488,332 L1472,348" stroke="#222" stroke-width="3"/>
+<text x="1480" y="311" text-anchor="middle" font-size="11">Значимое?</text>
+<rect x="1536.0" y="301.0" width="112" height="78" rx="9" fill="#fff" stroke="#222" stroke-width="1.5"/>
+<text x="1592" y="339" text-anchor="middle" font-size="11">9. Создать</text>
+<text x="1592" y="352" text-anchor="middle" font-size="11">задачу</text>
+<text x="1592" y="365" text-anchor="middle" font-size="11">согласования</text>
+<text x="1549.0" y="320.0" text-anchor="middle" font-size="14">⚙</text>
+<circle cx="1690" cy="340" r="18.0" fill="#fff" stroke="#222" stroke-width="4"/>
+<text x="1690" y="372" text-anchor="middle" font-size="11">Строка принята:</text>
+<text x="1690" y="386" text-anchor="middle" font-size="11">ждёт</text>
+<text x="1690" y="400" text-anchor="middle" font-size="11">согласования</text>
+<rect x="970.0" y="432.0" width="124" height="96" rx="9" fill="#fff" stroke="#222" stroke-width="1.5"/>
+<text x="1032" y="466" text-anchor="middle" font-size="11">Отклонить строку:</text>
+<text x="1032" y="479" text-anchor="middle" font-size="11">409 Conflict,</text>
+<text x="1032" y="492" text-anchor="middle" font-size="11">вернуть</text>
+<text x="1032" y="505" text-anchor="middle" font-size="11">актуальную</text>
+<text x="1032" y="518" text-anchor="middle" font-size="11">версию (EXC-2)</text>
+<text x="983.0" y="451.0" text-anchor="middle" font-size="14">⚙</text>
+<circle cx="1150" cy="480" r="18.0" fill="#fff" stroke="#222" stroke-width="4"/>
+<text x="1150" y="512" text-anchor="middle" font-size="11">Строка</text>
+<text x="1150" y="526" text-anchor="middle" font-size="11">отклонена</text>
+<rect x="1194.0" y="438.0" width="124" height="84" rx="9" fill="#fff" stroke="#222" stroke-width="1.5"/>
+<text x="1256" y="479" text-anchor="middle" font-size="11">Отклонить строку:</text>
+<text x="1256" y="492" text-anchor="middle" font-size="11">код правила BR</text>
+<text x="1256" y="505" text-anchor="middle" font-size="11">(problem+json)</text>
+<text x="1207.0" y="457.0" text-anchor="middle" font-size="14">⚙</text>
+<circle cx="1372" cy="480" r="18.0" fill="#fff" stroke="#222" stroke-width="4"/>
+<text x="1372" y="512" text-anchor="middle" font-size="11">Строка</text>
+<text x="1372" y="526" text-anchor="middle" font-size="11">отклонена</text>
+<rect x="1424.0" y="441.0" width="112" height="78" rx="9" fill="#fff" stroke="#222" stroke-width="1.5"/>
+<text x="1480" y="479" text-anchor="middle" font-size="11">9a.</text>
+<text x="1480" y="492" text-anchor="middle" font-size="11">Автосогласовать</text>
+<text x="1480" y="505" text-anchor="middle" font-size="11">по порогам</text>
+<text x="1437.0" y="460.0" text-anchor="middle" font-size="14">⚙</text>
+<circle cx="1590" cy="480" r="18.0" fill="#fff" stroke="#222" stroke-width="4"/>
+<text x="1590" y="512" text-anchor="middle" font-size="11">Строка</text>
+<text x="1590" y="526" text-anchor="middle" font-size="11">принята</text>
+<rect x="1794.0" y="298.0" width="112" height="84" rx="9" fill="#fff" stroke="#222" stroke-width="1.5"/>
+<text x="1850" y="332.5" text-anchor="middle" font-size="11">Сформировать</text>
+<text x="1850" y="345.5" text-anchor="middle" font-size="11">ответ со</text>
+<text x="1850" y="358.5" text-anchor="middle" font-size="11">статусом по</text>
+<text x="1850" y="371.5" text-anchor="middle" font-size="11">каждой строке</text>
+<rect x="1801.0" y="306.0" width="14" height="10" fill="#222" stroke="#222"/><path d="M1801.0,306.0 L1808.0,312.0 L1815.0,306.0" fill="none" stroke="#fff"/>
+<polygon points="1970,317.0 1993.0,340 1970,363.0 1947.0,340" fill="#fff" stroke="#222" stroke-width="1.5"/>
+<path d="M1962,332 L1978,348 M1978,332 L1962,348" stroke="#222" stroke-width="3"/>
+<text x="1970" y="297" text-anchor="middle" font-size="11">Есть принятые</text>
+<text x="1970" y="311" text-anchor="middle" font-size="11">строки?</text>
+<rect x="2038.0" y="295.0" width="124" height="90" rx="9" fill="#fff" stroke="#222" stroke-width="3.5"/>
+<text x="2100" y="309" text-anchor="middle" font-size="11">Шаги 10–16:</text>
+<text x="2100" y="322" text-anchor="middle" font-size="11">согласование,</text>
+<text x="2100" y="335" text-anchor="middle" font-size="11">версия,</text>
+<text x="2100" y="348" text-anchor="middle" font-size="11">публикация</text>
+<text x="2100" y="361" text-anchor="middle" font-size="11">(схемы 1, 3)</text>
+<rect x="2093" y="368.0" width="14" height="14" fill="#fff" stroke="#222"/><path d="M2096,375.0 H2104 M2100,371.0 V379.0" stroke="#222"/>
+<circle cx="2205" cy="340" r="18.0" fill="#fff" stroke="#222" stroke-width="4"/>
+<text x="2205" y="372" text-anchor="middle" font-size="11">Принятые</text>
+<text x="2205" y="386" text-anchor="middle" font-size="11">строки</text>
+<text x="2205" y="400" text-anchor="middle" font-size="11">опубликованы</text>
+<circle cx="1970" cy="430" r="18.0" fill="#fff" stroke="#222" stroke-width="4"/>
+<text x="2026.54" y="420" text-anchor="middle" font-size="11">Пакет</text>
+<text x="2026.54" y="434" text-anchor="middle" font-size="11">полностью</text>
+<text x="2026.54" y="448" text-anchor="middle" font-size="11">отклонён</text>
+<rect x="450" y="300" width="20.3438" height="14" fill="#fff" fill-opacity="0.85"/>
+<text x="460.172" y="311" text-anchor="middle" font-size="10.5" fill="#1a3d7c">да</text>
+<rect x="1059" y="324" width="20.3438" height="14" fill="#fff" fill-opacity="0.85"/>
+<text x="1069.17" y="335" text-anchor="middle" font-size="10.5" fill="#1a3d7c">да</text>
+<rect x="1037" y="368" width="26.3594" height="14" fill="#fff" fill-opacity="0.85"/>
+<text x="1050.18" y="379" text-anchor="middle" font-size="10.5" fill="#1a3d7c">нет</text>
+<rect x="1283" y="324" width="26.3594" height="14" fill="#fff" fill-opacity="0.85"/>
+<text x="1296.18" y="335" text-anchor="middle" font-size="10.5" fill="#1a3d7c">нет</text>
+<rect x="1261" y="368" width="20.3438" height="14" fill="#fff" fill-opacity="0.85"/>
+<text x="1271.17" y="379" text-anchor="middle" font-size="10.5" fill="#1a3d7c">да</text>
+<rect x="1507" y="324" width="20.3438" height="14" fill="#fff" fill-opacity="0.85"/>
+<text x="1517.17" y="335" text-anchor="middle" font-size="10.5" fill="#1a3d7c">да</text>
+<rect x="1485" y="368" width="26.3594" height="14" fill="#fff" fill-opacity="0.85"/>
+<text x="1498.18" y="379" text-anchor="middle" font-size="10.5" fill="#1a3d7c">нет</text>
+<rect x="470" y="322" width="26.3594" height="14" fill="#fff" fill-opacity="0.85"/>
+<text x="483.18" y="333" text-anchor="middle" font-size="10.5" fill="#1a3d7c">нет</text>
+<rect x="1997" y="324" width="20.3438" height="14" fill="#fff" fill-opacity="0.85"/>
+<text x="2007.17" y="335" text-anchor="middle" font-size="10.5" fill="#1a3d7c">да</text>
+<rect x="1975" y="368" width="26.3594" height="14" fill="#fff" fill-opacity="0.85"/>
+<text x="1988.18" y="379" text-anchor="middle" font-size="10.5" fill="#1a3d7c">нет</text>
+<rect x="580" y="182" width="84.8281" height="28" fill="#fff" fill-opacity="0.85"/>
+<text x="622.414" y="193" text-anchor="middle" font-size="10.5" fill="#1a3d7c">Сохранённый</text>
+<text x="622.414" y="207" text-anchor="middle" font-size="10.5" fill="#1a3d7c">результат</text>
+<path d="M72,420 L60,420 L60,530 L72,530" fill="none" stroke="#222"/>
+<text x="67" y="434" font-size="10.5" fill="#333">ALT-3: принцип «всё или ничего» действует на</text>
+<text x="67" y="447" font-size="10.5" fill="#333">уровне строки (дата × категория × тариф):</text>
+<text x="67" y="460" font-size="10.5" fill="#333">корректные строки принимаются, ошибочные</text>
+<text x="67" y="473" font-size="10.5" fill="#333">отклоняются с кодом правила. Итоговый ответ</text>
+<text x="67" y="486" font-size="10.5" fill="#333">содержит статус по каждой строке; ошибки — в</text>
+<text x="67" y="499" font-size="10.5" fill="#333">формате application/problem+json (RFC 9457).</text>
+<path d="M72,545 L60,545 L60,625 L72,625" fill="none" stroke="#222"/>
+<text x="67" y="559" font-size="10.5" fill="#333">EXC-2: устаревшая запись (не совпал ETag / If-Match)</text>
+<text x="67" y="572" font-size="10.5" fill="#333">отклоняется с 409 Conflict; данные не затираются, в</text>
+<text x="67" y="585" font-size="10.5" fill="#333">ответе — актуальная версия и различия.</text>
+</svg>

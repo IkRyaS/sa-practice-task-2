@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Definitions_04_api_update" targetNamespace="http://bpmn.io/schema/bpmn" exporter="sa-practice-task-2" exporterVersion="1.0">
+  <bpmn:collaboration id="Collab_04_api_update">
+    <bpmn:participant id="P_PMS" name="PMS / channel manager отеля" processRef="Proc_P_PMS" />
+    <bpmn:participant id="P_Sys" name="Платформа туроператора (API)" processRef="Proc_P_Sys" />
+    <bpmn:messageFlow id="MF_28" name="" sourceRef="Pt" targetRef="Pm0" />
+    <bpmn:messageFlow id="MF_29" name="" sourceRef="Tresp" targetRef="Pr" />
+    <bpmn:messageFlow id="MF_30" name="Сохранённый результат" sourceRef="Tr2" targetRef="Pr" />
+  </bpmn:collaboration>
+  <bpmn:process id="Proc_P_PMS" name="PMS / channel manager отеля" isExecutable="false">
+      <bpmn:startEvent id="Ps" name="Изменились квоты или тарифы в PMS">
+        <bpmn:outgoing>SF_1</bpmn:outgoing>
+      </bpmn:startEvent>
+      <bpmn:sendTask id="Pt" name="Отправить пакет изменений с Idempotency-Key">
+        <bpmn:incoming>SF_1</bpmn:incoming>
+        <bpmn:outgoing>SF_2</bpmn:outgoing>
+      </bpmn:sendTask>
+      <bpmn:receiveTask id="Pr" name="Принять статус по каждой строке">
+        <bpmn:incoming>SF_2</bpmn:incoming>
+        <bpmn:outgoing>SF_3</bpmn:outgoing>
+      </bpmn:receiveTask>
+      <bpmn:endEvent id="Pe" name="Результат обработан">
+        <bpmn:incoming>SF_3</bpmn:incoming>
+      </bpmn:endEvent>
+    <bpmn:sequenceFlow id="SF_1" name="" sourceRef="Ps" targetRef="Pt" />
+    <bpmn:sequenceFlow id="SF_2" name="" sourceRef="Pt" targetRef="Pr" />
+    <bpmn:sequenceFlow id="SF_3" name="" sourceRef="Pr" targetRef="Pe" />
+    <bpmn:textAnnotation id="N1"><bpmn:text>ALT-3: принцип «всё или ничего» действует на уровне строки (дата × категория × тариф): корректные строки принимаются, ошибочные отклоняются с кодом правила. Итоговый ответ содержит статус по каждой строке; ошибки — в формате application/problem+json (RFC 9457).</bpmn:text></bpmn:textAnnotation>
+    <bpmn:textAnnotation id="N2"><bpmn:text>EXC-2: устаревшая запись (не совпал ETag / If-Match) отклоняется с 409 Conflict; данные не затираются, в ответе — актуальная версия и различия.</bpmn:text></bpmn:textAnnotation>
+  </bpmn:process>
+  <bpmn:process id="Proc_P_Sys" name="Платформа туроператора (API)" isExecutable="false">
+      <bpmn:startEvent id="Pm0" name="Получен пакет изменений">
+        <bpmn:outgoing>SF_4</bpmn:outgoing>
+        <bpmn:messageEventDefinition id="Pm0_med" messageRef="Msg_Pm0" />
+      </bpmn:startEvent>
+      <bpmn:exclusiveGateway id="Gi" name="Idempotency-Key уже обработан?">
+        <bpmn:incoming>SF_4</bpmn:incoming>
+        <bpmn:outgoing>SF_5</bpmn:outgoing>
+        <bpmn:outgoing>SF_22</bpmn:outgoing>
+      </bpmn:exclusiveGateway>
+      <bpmn:serviceTask id="Tf" name="Взять сохранённый результат">
+        <bpmn:incoming>SF_5</bpmn:incoming>
+        <bpmn:outgoing>SF_6</bpmn:outgoing>
+      </bpmn:serviceTask>
+      <bpmn:sendTask id="Tr2" name="Вернуть сохранённый результат">
+        <bpmn:incoming>SF_6</bpmn:incoming>
+        <bpmn:outgoing>SF_7</bpmn:outgoing>
+      </bpmn:sendTask>
+      <bpmn:endEvent id="Ed" name="Повтор обработан">
+        <bpmn:incoming>SF_7</bpmn:incoming>
+      </bpmn:endEvent>
+      <bpmn:subProcess id="SP" name="Обработка строки пакета (дата × категория × тариф); строки независимы">
+        <bpmn:incoming>SF_22</bpmn:incoming>
+        <bpmn:outgoing>SF_23</bpmn:outgoing>
+        <bpmn:multiInstanceLoopCharacteristics />
+        <bpmn:startEvent id="sS" name="">
+          <bpmn:outgoing>SF_8</bpmn:outgoing>
+        </bpmn:startEvent>
+        <bpmn:serviceTask id="sV" name="Проверить версию объекта (ETag / If-Match)">
+          <bpmn:incoming>SF_8</bpmn:incoming>
+          <bpmn:outgoing>SF_9</bpmn:outgoing>
+        </bpmn:serviceTask>
+        <bpmn:exclusiveGateway id="sG1" name="Версия актуальна?">
+          <bpmn:incoming>SF_9</bpmn:incoming>
+          <bpmn:outgoing>SF_10</bpmn:outgoing>
+          <bpmn:outgoing>SF_11</bpmn:outgoing>
+        </bpmn:exclusiveGateway>
+        <bpmn:serviceTask id="sV2" name="7. Валидировать строку (BR-03…09)">
+          <bpmn:incoming>SF_10</bpmn:incoming>
+          <bpmn:outgoing>SF_12</bpmn:outgoing>
+        </bpmn:serviceTask>
+        <bpmn:exclusiveGateway id="sG2" name="Есть ошибки?">
+          <bpmn:incoming>SF_12</bpmn:incoming>
+          <bpmn:outgoing>SF_13</bpmn:outgoing>
+          <bpmn:outgoing>SF_14</bpmn:outgoing>
+        </bpmn:exclusiveGateway>
+        <bpmn:serviceTask id="sC" name="8. Классифицировать изменение (BR-10)">
+          <bpmn:incoming>SF_13</bpmn:incoming>
+          <bpmn:outgoing>SF_15</bpmn:outgoing>
+        </bpmn:serviceTask>
+        <bpmn:exclusiveGateway id="sG3" name="Значимое?">
+          <bpmn:incoming>SF_15</bpmn:incoming>
+          <bpmn:outgoing>SF_16</bpmn:outgoing>
+          <bpmn:outgoing>SF_17</bpmn:outgoing>
+        </bpmn:exclusiveGateway>
+        <bpmn:serviceTask id="sT" name="9. Создать задачу согласования">
+          <bpmn:incoming>SF_16</bpmn:incoming>
+          <bpmn:outgoing>SF_18</bpmn:outgoing>
+        </bpmn:serviceTask>
+        <bpmn:endEvent id="sEnd3" name="Строка принята: ждёт согласования">
+          <bpmn:incoming>SF_18</bpmn:incoming>
+        </bpmn:endEvent>
+        <bpmn:serviceTask id="sR1" name="Отклонить строку: 409 Conflict, вернуть актуальную версию (EXC-2)">
+          <bpmn:incoming>SF_11</bpmn:incoming>
+          <bpmn:outgoing>SF_19</bpmn:outgoing>
+        </bpmn:serviceTask>
+        <bpmn:endEvent id="sEnd1" name="Строка отклонена">
+          <bpmn:incoming>SF_19</bpmn:incoming>
+        </bpmn:endEvent>
+        <bpmn:serviceTask id="sR2" name="Отклонить строку: код правила BR (problem+json)">
+          <bpmn:incoming>SF_14</bpmn:incoming>
+          <bpmn:outgoing>SF_20</bpmn:outgoing>
+        </bpmn:serviceTask>
+        <bpmn:endEvent id="sEnd2" name="Строка отклонена">
+          <bpmn:incoming>SF_20</bpmn:incoming>
+        </bpmn:endEvent>
+        <bpmn:serviceTask id="sA" name="9a. Автосогласовать по порогам">
+          <bpmn:incoming>SF_17</bpmn:incoming>
+          <bpmn:outgoing>SF_21</bpmn:outgoing>
+        </bpmn:serviceTask>
+        <bpmn:endEvent id="sEnd4" name="Строка принята">
+          <bpmn:incoming>SF_21</bpmn:incoming>
+        </bpmn:endEvent>
+        <bpmn:sequenceFlow id="SF_8" name="" sourceRef="sS" targetRef="sV" />
+        <bpmn:sequenceFlow id="SF_9" name="" sourceRef="sV" targetRef="sG1" />
+        <bpmn:sequenceFlow id="SF_10" name="да" sourceRef="sG1" targetRef="sV2" />
+        <bpmn:sequenceFlow id="SF_11" name="нет" sourceRef="sG1" targetRef="sR1" />
+        <bpmn:sequenceFlow id="SF_12" name="" sourceRef="sV2" targetRef="sG2" />
+        <bpmn:sequenceFlow id="SF_13" name="нет" sourceRef="sG2" targetRef="sC" />
+        <bpmn:sequenceFlow id="SF_14" name="да" sourceRef="sG2" targetRef="sR2" />
+        <bpmn:sequenceFlow id="SF_15" name="" sourceRef="sC" targetRef="sG3" />
+        <bpmn:sequenceFlow id="SF_16" name="да" sourceRef="sG3" targetRef="sT" />
+        <bpmn:sequenceFlow id="SF_17" name="нет" sourceRef="sG3" targetRef="sA" />
+        <bpmn:sequenceFlow id="SF_18" name="" sourceRef="sT" targetRef="sEnd3" />
+        <bpmn:sequenceFlow id="SF_19" name="" sourceRef="sR1" targetRef="sEnd1" />
+        <bpmn:sequenceFlow id="SF_20" name="" sourceRef="sR2" targetRef="sEnd2" />
+        <bpmn:sequenceFlow id="SF_21" name="" sourceRef="sA" targetRef="sEnd4" />
+      </bpmn:subProcess>
+      <bpmn:sendTask id="Tresp" name="Сформировать ответ со статусом по каждой строке">
+        <bpmn:incoming>SF_23</bpmn:incoming>
+        <bpmn:outgoing>SF_24</bpmn:outgoing>
+      </bpmn:sendTask>
+      <bpmn:exclusiveGateway id="Gp" name="Есть принятые строки?">
+        <bpmn:incoming>SF_24</bpmn:incoming>
+        <bpmn:outgoing>SF_25</bpmn:outgoing>
+        <bpmn:outgoing>SF_27</bpmn:outgoing>
+      </bpmn:exclusiveGateway>
+      <bpmn:callActivity id="CA" name="Шаги 10–16: согласование, версия, публикация (схемы 1, 3)" calledElement="Proc_main_process">
+        <bpmn:incoming>SF_25</bpmn:incoming>
+        <bpmn:outgoing>SF_26</bpmn:outgoing>
+      </bpmn:callActivity>
+      <bpmn:endEvent id="E1" name="Принятые строки опубликованы">
+        <bpmn:incoming>SF_26</bpmn:incoming>
+      </bpmn:endEvent>
+      <bpmn:endEvent id="E2" name="Пакет полностью отклонён">
+        <bpmn:incoming>SF_27</bpmn:incoming>
+      </bpmn:endEvent>
+    <bpmn:sequenceFlow id="SF_4" name="" sourceRef="Pm0" targetRef="Gi" />
+    <bpmn:sequenceFlow id="SF_5" name="да" sourceRef="Gi" targetRef="Tf" />
+    <bpmn:sequenceFlow id="SF_6" name="" sourceRef="Tf" targetRef="Tr2" />
+    <bpmn:sequenceFlow id="SF_7" name="" sourceRef="Tr2" targetRef="Ed" />
+    <bpmn:sequenceFlow id="SF_22" name="нет" sourceRef="Gi" targetRef="SP" />
+    <bpmn:sequenceFlow id="SF_23" name="" sourceRef="SP" targetRef="Tresp" />
+    <bpmn:sequenceFlow id="SF_24" name="" sourceRef="Tresp" targetRef="Gp" />
+    <bpmn:sequenceFlow id="SF_25" name="да" sourceRef="Gp" targetRef="CA" />
+    <bpmn:sequenceFlow id="SF_26" name="" sourceRef="CA" targetRef="E1" />
+    <bpmn:sequenceFlow id="SF_27" name="нет" sourceRef="Gp" targetRef="E2" />
+  </bpmn:process>
+  <bpmn:message id="Msg_Pm0" name="Пакет изменений" />
+  <bpmndi:BPMNDiagram id="Diagram_04_api_update">
+    <bpmndi:BPMNPlane id="Plane_04_api_update" bpmnElement="Collab_04_api_update">
+      <bpmndi:BPMNShape id="P_PMS_di" bpmnElement="P_PMS" isHorizontal="true"><dc:Bounds x="20" y="20" width="2270" height="150" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="P_Sys_di" bpmnElement="P_Sys" isHorizontal="true"><dc:Bounds x="20" y="190" width="2270" height="460" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Ps_di" bpmnElement="Ps"><dc:Bounds x="167" y="77" width="36" height="36" /><bpmndi:BPMNLabel><dc:Bounds x="127.672" y="116" width="114.656" height="28" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Pt_di" bpmnElement="Pt"><dc:Bounds x="259" y="53" width="112" height="84" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Pr_di" bpmnElement="Pr"><dc:Bounds x="1794" y="56" width="112" height="78" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Pe_di" bpmnElement="Pe"><dc:Bounds x="1972" y="77" width="36" height="36" /><bpmndi:BPMNLabel><dc:Bounds x="1956.46" y="116" width="67.0781" height="28" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Pm0_di" bpmnElement="Pm0"><dc:Bounds x="297" y="322" width="36" height="36" /><bpmndi:BPMNLabel><dc:Bounds x="268.883" y="361" width="92.2344" height="28" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gi_di" bpmnElement="Gi" isMarkerVisible="true"><dc:Bounds x="422" y="317" width="46" height="46" /><bpmndi:BPMNLabel><dc:Bounds x="375" y="368" width="101.781" height="28" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Tf_di" bpmnElement="Tf"><dc:Bounds x="389" y="227" width="112" height="70" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Tr2_di" bpmnElement="Tr2"><dc:Bounds x="519" y="227" width="112" height="70" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Ed_di" bpmnElement="Ed"><dc:Bounds x="667" y="244" width="36" height="36" /><bpmndi:BPMNLabel><dc:Bounds x="628.906" y="283" width="112.188" height="14" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SP_di" bpmnElement="SP" isExpanded="true"><dc:Bounds x="760" y="212" width="980" height="380" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="sS_di" bpmnElement="sS"><dc:Bounds x="792" y="322" width="36" height="36" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="sV_di" bpmnElement="sV"><dc:Bounds x="864" y="301" width="112" height="78" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="sG1_di" bpmnElement="sG1" isMarkerVisible="true"><dc:Bounds x="1009" y="317" width="46" height="46" /><bpmndi:BPMNLabel><dc:Bounds x="995.844" y="286" width="72.3125" height="28" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="sV2_di" bpmnElement="sV2"><dc:Bounds x="1088" y="301" width="112" height="78" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="sG2_di" bpmnElement="sG2" isMarkerVisible="true"><dc:Bounds x="1233" y="317" width="46" height="46" /><bpmndi:BPMNLabel><dc:Bounds x="1213.12" y="300" width="85.7656" height="14" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="sC_di" bpmnElement="sC"><dc:Bounds x="1312" y="301" width="112" height="78" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="sG3_di" bpmnElement="sG3" isMarkerVisible="true"><dc:Bounds x="1457" y="317" width="46" height="46" /><bpmndi:BPMNLabel><dc:Bounds x="1445.87" y="300" width="68.2656" height="14" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="sT_di" bpmnElement="sT"><dc:Bounds x="1536" y="301" width="112" height="78" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="sEnd3_di" bpmnElement="sEnd3"><dc:Bounds x="1672" y="322" width="36" height="36" /><bpmndi:BPMNLabel><dc:Bounds x="1638.66" y="361" width="102.672" height="42" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="sR1_di" bpmnElement="sR1"><dc:Bounds x="970" y="432" width="124" height="96" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="sEnd1_di" bpmnElement="sEnd1"><dc:Bounds x="1132" y="462" width="36" height="36" /><bpmndi:BPMNLabel><dc:Bounds x="1116.29" y="501" width="67.4219" height="28" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="sR2_di" bpmnElement="sR2"><dc:Bounds x="1194" y="438" width="124" height="84" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="sEnd2_di" bpmnElement="sEnd2"><dc:Bounds x="1354" y="462" width="36" height="36" /><bpmndi:BPMNLabel><dc:Bounds x="1338.29" y="501" width="67.4219" height="28" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="sA_di" bpmnElement="sA"><dc:Bounds x="1424" y="441" width="112" height="78" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="sEnd4_di" bpmnElement="sEnd4"><dc:Bounds x="1572" y="462" width="36" height="36" /><bpmndi:BPMNLabel><dc:Bounds x="1562.86" y="501" width="54.2812" height="28" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Tresp_di" bpmnElement="Tresp"><dc:Bounds x="1794" y="298" width="112" height="84" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gp_di" bpmnElement="Gp" isMarkerVisible="true"><dc:Bounds x="1947" y="317" width="46" height="46" /><bpmndi:BPMNLabel><dc:Bounds x="1923.8" y="286" width="92.3906" height="28" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="CA_di" bpmnElement="CA"><dc:Bounds x="2038" y="295" width="124" height="90" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="E1_di" bpmnElement="E1"><dc:Bounds x="2187" y="322" width="36" height="36" /><bpmndi:BPMNLabel><dc:Bounds x="2160.06" y="361" width="89.875" height="42" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="E2_di" bpmnElement="E2"><dc:Bounds x="1952" y="412" width="36" height="36" /><bpmndi:BPMNLabel><dc:Bounds x="1992" y="409" width="69.0781" height="42" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="N1_di" bpmnElement="N1"><dc:Bounds x="60" y="420" width="330" height="110" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="N2_di" bpmnElement="N2"><dc:Bounds x="60" y="545" width="330" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SF_1_di" bpmnElement="SF_1"><di:waypoint x="203" y="95" /><di:waypoint x="259" y="95" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SF_2_di" bpmnElement="SF_2"><di:waypoint x="371" y="95" /><di:waypoint x="1794" y="95" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SF_3_di" bpmnElement="SF_3"><di:waypoint x="1906" y="95" /><di:waypoint x="1972" y="95" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SF_4_di" bpmnElement="SF_4"><di:waypoint x="333" y="340" /><di:waypoint x="422" y="340" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SF_5_di" bpmnElement="SF_5"><di:waypoint x="445" y="317" /><di:waypoint x="445" y="297" /><bpmndi:BPMNLabel><dc:Bounds x="450" y="300" width="20.3438" height="14" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SF_6_di" bpmnElement="SF_6"><di:waypoint x="501" y="262" /><di:waypoint x="519" y="262" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SF_7_di" bpmnElement="SF_7"><di:waypoint x="631" y="262" /><di:waypoint x="667" y="262" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SF_8_di" bpmnElement="SF_8"><di:waypoint x="828" y="340" /><di:waypoint x="864" y="340" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SF_9_di" bpmnElement="SF_9"><di:waypoint x="976" y="340" /><di:waypoint x="1009" y="340" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SF_10_di" bpmnElement="SF_10"><di:waypoint x="1055" y="340" /><di:waypoint x="1088" y="340" /><bpmndi:BPMNLabel><dc:Bounds x="1059" y="324" width="20.3438" height="14" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SF_11_di" bpmnElement="SF_11"><di:waypoint x="1032" y="363" /><di:waypoint x="1032" y="432" /><bpmndi:BPMNLabel><dc:Bounds x="1037" y="368" width="26.3594" height="14" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SF_12_di" bpmnElement="SF_12"><di:waypoint x="1200" y="340" /><di:waypoint x="1233" y="340" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SF_13_di" bpmnElement="SF_13"><di:waypoint x="1279" y="340" /><di:waypoint x="1312" y="340" /><bpmndi:BPMNLabel><dc:Bounds x="1283" y="324" width="26.3594" height="14" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SF_14_di" bpmnElement="SF_14"><di:waypoint x="1256" y="363" /><di:waypoint x="1256" y="438" /><bpmndi:BPMNLabel><dc:Bounds x="1261" y="368" width="20.3438" height="14" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SF_15_di" bpmnElement="SF_15"><di:waypoint x="1424" y="340" /><di:waypoint x="1457" y="340" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SF_16_di" bpmnElement="SF_16"><di:waypoint x="1503" y="340" /><di:waypoint x="1536" y="340" /><bpmndi:BPMNLabel><dc:Bounds x="1507" y="324" width="20.3438" height="14" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SF_17_di" bpmnElement="SF_17"><di:waypoint x="1480" y="363" /><di:waypoint x="1480" y="441" /><bpmndi:BPMNLabel><dc:Bounds x="1485" y="368" width="26.3594" height="14" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SF_18_di" bpmnElement="SF_18"><di:waypoint x="1648" y="340" /><di:waypoint x="1672" y="340" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SF_19_di" bpmnElement="SF_19"><di:waypoint x="1094" y="480" /><di:waypoint x="1132" y="480" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SF_20_di" bpmnElement="SF_20"><di:waypoint x="1318" y="480" /><di:waypoint x="1354" y="480" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SF_21_di" bpmnElement="SF_21"><di:waypoint x="1536" y="480" /><di:waypoint x="1572" y="480" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SF_22_di" bpmnElement="SF_22"><di:waypoint x="468" y="340" /><di:waypoint x="760" y="340" /><bpmndi:BPMNLabel><dc:Bounds x="470" y="322" width="26.3594" height="14" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SF_23_di" bpmnElement="SF_23"><di:waypoint x="1740" y="340" /><di:waypoint x="1794" y="340" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SF_24_di" bpmnElement="SF_24"><di:waypoint x="1906" y="340" /><di:waypoint x="1947" y="340" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SF_25_di" bpmnElement="SF_25"><di:waypoint x="1993" y="340" /><di:waypoint x="2038" y="340" /><bpmndi:BPMNLabel><dc:Bounds x="1997" y="324" width="20.3438" height="14" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SF_26_di" bpmnElement="SF_26"><di:waypoint x="2162" y="340" /><di:waypoint x="2187" y="340" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SF_27_di" bpmnElement="SF_27"><di:waypoint x="1970" y="363" /><di:waypoint x="1970" y="412" /><bpmndi:BPMNLabel><dc:Bounds x="1975" y="368" width="26.3594" height="14" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MF_28_di" bpmnElement="MF_28"><di:waypoint x="315" y="137" /><di:waypoint x="315" y="322" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MF_29_di" bpmnElement="MF_29"><di:waypoint x="1860" y="298" /><di:waypoint x="1860" y="134" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MF_30_di" bpmnElement="MF_30"><di:waypoint x="575" y="227" /><di:waypoint x="575" y="180" /><di:waypoint x="1820" y="180" /><di:waypoint x="1820" y="134" /><bpmndi:BPMNLabel><dc:Bounds x="580" y="182" width="84.8281" height="28" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
